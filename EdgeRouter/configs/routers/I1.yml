@@ -1,0 +1,17 @@
+config:
+  router:
+  - id: I1
+    mode: interior
+
+  listener:
+  - host: 0.0.0.0
+    port: 5672
+
+  connector:
+  # Router I2
+  - host: I2.IP
+    port: I2.listener_port
+
+  # Broker A
+  - host: A.IP
+    port: 5672

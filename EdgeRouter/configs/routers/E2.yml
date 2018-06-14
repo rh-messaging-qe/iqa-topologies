@@ -1,0 +1,13 @@
+config:
+  router:
+  - id: E2
+    mode: edge
+
+  listener:
+  - host: 0.0.0.0
+    port: 5672
+
+  connector:
+  # Connector to Interior I2
+  - host: I2.IP
+    port: 5672

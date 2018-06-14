@@ -1,0 +1,13 @@
+config:
+  router:
+  - id: I2
+    mode: interior
+
+  listener:
+  - host: 0.0.0.0
+    port: 5672
+
+  connector:
+  # Router I1
+  - host: I1.IP
+    port: 5672
