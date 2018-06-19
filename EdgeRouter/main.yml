@@ -1,6 +1,10 @@
 ---
 - hosts: localhost
   tasks:
+    - name: Create lab0 network
+      docker_network:
+        name: lab0
+
     - name: Start Broker A
       docker_container:
         name: Broker.A
