@@ -1,13 +1,33 @@
 config:
   router:
-  - id: I2
+  - id: Router.I2
     mode: interior
 
   listener:
+  # Standard AMQP listener
   - host: 0.0.0.0
     port: 5672
+    saslMechanisms: ANONYMOUS
+
+  # Internal router communication
+  - role: inter-router
+    host: 0.0.0.0
+    port: 5673
+    saslMechanisms: ANONYMOUS
+
+  # Edge router listener
+  - role: edge-uplink
+    host: 0.0.0.0
+    port: 5674
+    saslMechanisms: ANONYMOUS
 
   connector:
   # Router I1
-  - host: I1.IP
+  - role: inter-router
+    host: Router.I1.lab0
     port: 5672
+    saslMechanisms: ANONYMOUS
+
+  log:
+  - module: ROUTER
+    enable: trace+

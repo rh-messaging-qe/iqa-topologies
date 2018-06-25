@@ -1,0 +1,4 @@
+- name: Create configuration file
+  template: src=generated/{{host}}/qdrouterd.conf.j2 dest=generated/{{host}}/qdrouterd.conf
+  force: yes
+  delegate_to: localhost

@@ -1,7 +1,8 @@
 # Simple edge mode based topology
 
 ## Description
-    
+
+@TODO  
 
 ## Graph
 
@@ -36,3 +37,7 @@
 - Interior's clients (I1-I2)
 - Edge's routers (E1-E2)
 - Edge's clients (E1-E2)
+
+## Running the playbook
+
+ansible-playbook -i docker_inventory main.yml

@@ -1,0 +1,9 @@
+---
+- hosts: brokers
+  tasks:
+    - name: ping brokers
+      ping:
+
+- hosts: routers
+  tasks:
+    - name: ping routers

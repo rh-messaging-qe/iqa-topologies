@@ -1,0 +1,52 @@
+---
+- name: Start Client.I1 client container
+  docker_container:
+    name: Client.I1 
+    image: enkeys/cli-rhea:centos7
+    state: started
+    networks:
+      - name: lab0
+        aliases:
+          - Client.I1
+        links:
+          - I1
+    command: sleep infinity
+
+- name: Start Client.I2 client container
+  docker_container:
+    name: Client.I2 
+    image: enkeys/cli-rhea:centos7
+    state: started
+    networks:
+      - name: lab0
+        aliases:
+          - Client.I2
+        links:
+          - I2
+    command: sleep infinity
+
+- name: Start Client.E1 client container
+  docker_container:
+    name: Client.E1 
+    image: enkeys/cli-rhea:centos7
+    state: started
+    networks:
+      - name: lab0
+        aliases:
+          - Client.E1
+        links:
+          - E1
+    command: sleep infinity
+
+- name: Start Client.E2 client container
+  docker_container:
+    name: Client.E2 
+    image: enkeys/cli-rhea:centos7
+    state: started
+    networks:
+      - name: lab0
+        aliases:
+          - Client.E2
+        links:
+          - E2
+    command: sleep infinity

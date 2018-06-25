@@ -1,0 +1,19 @@
+[docker-host]
+localhost ansible_connection=local
+
+[routers]
+Router.I1
+Router.I2
+Router.E1
+Router.E2
+
+[brokers]
+Broker.A
+
+[routers:vars]
+ansible_connection=docker
+ansible_user=root
+
+[brokers:vars]
+ansible_connection=docker
+ansible_user=root

@@ -1,13 +1,20 @@
 config:
   router:
-  - id: E1
+  - id: Router.E1
     mode: edge
 
   listener:
   - host: 0.0.0.0
     port: 5672
+    saslMechanisms: ANONYMOUS
 
   connector:
-  # Connector to Interior I1
-  - host: I1.IP
-    port: 5672
+  # Edge connector to Interior I1
+  - role: edge-uplink
+    host: Router.I1.lab0
+    port: 5674
+    saslMechanisms: ANONYMOUS
+
+  log:
+  - module: ROUTER
+    enable: trace+
