@@ -1,0 +1,5 @@
+---
+- name: "Print stdout"
+  debug: 
+    msg: "{{ process.stdout.split('\n') }}"
+  when: process.stdout

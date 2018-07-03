@@ -1,0 +1,80 @@
+---
+- hosts: Client.B.cli-rhea
+  tasks:
+    - name: R1 Receive 1000 messages to Router.B <test.first>
+      command: cli-rhea-receiver --address test.first --broker Router.B -c 1000
+      async: 50
+      poll: 0
+      register: R1
+
+    - name: S1 Send 1000 messages to Router.B <test.first>
+      command: cli-rhea-sender --address test.first --broker Router.B -c 1000
+      async: 50
+      poll: 0
+      register: S1
+
+    - name: Verify R1
+      include: "helpers/check_results.yml wait={{R1}}"
+    
+    - name: Verify S1
+      include: "helpers/check_results.yml wait={{S1}}"
+
+- hosts: Client.B.cli-rhea
+  tasks:
+    - name: R1 Receive 1000 messages to Router.B <test.second>
+      command: cli-rhea-receiver --address test.second --broker Router.B -c 1000
+      async: 50
+      poll: 0
+      register: R1
+
+    - name: S1 Send 1000 messages to Router.B <test.second>
+      command: cli-rhea-sender --address test.second --broker Router.B -c 1000
+      async: 50
+      poll: 0
+      register: S1
+
+    - name: Verify R1
+      include: "helpers/check_results.yml wait={{R1}}"
+    
+    - name: Verify S1
+      include: "helpers/check_results.yml wait={{S1}}"
+
+- hosts: Client.A.cli-rhea
+  tasks:
+    - name: R1 Receive 1000 messages to Router.A <test.first>
+      command: cli-rhea-receiver --address test.first --broker Router.A -c 1000
+      async: 50
+      poll: 0
+      register: R1
+
+    - name: S1 Send 1000 messages to Router.B <test.first>
+      command: cli-rhea-sender --address test.first --broker Router.A -c 1000
+      async: 50
+      poll: 0
+      register: S1
+
+    - name: Verify R1
+      include: "helpers/check_results.yml wait={{R1}}"
+    
+    - name: Verify S1
+      include: "helpers/check_results.yml wait={{S1}}"
+
+- hosts: Client.A.cli-rhea
+  tasks:
+    - name: R1 Receive 1000 messages to Router.A <test.second>
+      command: cli-rhea-receiver --address test.second --broker Router.A -c 1000
+      async: 50
+      poll: 0
+      register: R1
+
+    - name: S1 Send 1000 messages to Router.B <test.second>
+      command: cli-rhea-sender --address test.second --broker Router.A -c 1000
+      async: 50
+      poll: 0
+      register: S1
+
+    - name: Verify R1
+      include: "helpers/check_results.yml wait={{R1}}"
+    
+    - name: Verify S1
+      include: "helpers/check_results.yml wait={{S1}}"

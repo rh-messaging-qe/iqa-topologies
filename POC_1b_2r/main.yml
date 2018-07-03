@@ -1,0 +1,14 @@
+---
+- hosts: docker-host
+  tasks:
+    - name: Deployment
+      include_tasks: tasks/deploy_docker.yml
+
+    - name: Include tasks for deploy brokers
+      include_tasks: tasks/deploy_brokers.yml
+
+    - name: Include tasks for deploy routers
+      include_tasks: tasks/deploy_routers.yml
+      
+    - name: Include tasks for deploy clients
+      include_tasks: tasks/deploy_clients.yml

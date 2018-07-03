@@ -1,0 +1,14 @@
+---
+- name: Check Results
+  async_status: 
+    jid: "{{ wait.ansible_job_id }}"
+  register: task_result
+  until: task_result.finished
+  retries: 10
+  delay: 1
+  ignore_errors: True
+
+- name: "Debug start"
+  debug:
+    var: task_result.delta
+  when: task_result.delta

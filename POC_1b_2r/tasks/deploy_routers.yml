@@ -1,0 +1,24 @@
+---
+- name: Start Internal Router.A
+  docker_container:
+    name: Router.A
+    image: rhmessagingqe/qpid-dispatch
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Broker.A
+    volumes:
+      - "{{playbook_dir}}/generated/Router.A:/var/lib/qdrouterd"
+
+- name: Start Internal Router.B
+  docker_container:
+    name: Router.B
+    image: rhmessagingqe/qpid-dispatch
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Router.A
+    volumes:
+      - "{{playbook_dir}}/generated/Router.B:/var/lib/qdrouterd"

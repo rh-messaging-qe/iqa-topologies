@@ -1,0 +1,68 @@
+---
+- name: Start Client.A.cli-rhea client container
+  docker_container:
+    name: Client.A.cli-rhea
+    image: rhmessagingqe/cli-rhea:centos7
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Router.A
+    command: sh -c 'while sleep 3600; do :; done'
+
+- name: Start Client.B.cli-rhea client container
+  docker_container:
+    name: Client.B.cli-rhea
+    image: rhmessagingqe/cli-rhea:centos7
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Router.B
+    command: sh -c 'while sleep 3600; do :; done'
+
+
+- name: Start Client.A.cli-proton-python client container
+  docker_container:
+    name: Client.A.cli-proton-python
+    image: rhmessagingqe/cli-proton-python
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Router.A
+    command: sh -c 'while sleep 3600; do :; done'
+
+- name: Start Client.B.cli-proton-python client container
+  docker_container:
+    name: Client.B.cli-proton-python
+    image: rhmessagingqe/cli-proton-python
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Router.B
+    command: sh -c 'while sleep 3600; do :; done'
+
+
+- name: Start Client.A.cli-java client container
+  docker_container:
+    name: Client.A.cli-java
+    image: rhmessagingqe/cli-java:debian
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Router.A
+    command: sh -c 'while sleep 3600; do :; done'
+
+- name: Start Client.B.cli-java client container
+  docker_container:
+    name: Client.B.cli-java
+    image: rhmessagingqe/cli-java:debian
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Router.B
+    command: sh -c 'while sleep 3600; do :; done'

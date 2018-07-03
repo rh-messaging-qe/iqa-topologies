@@ -1,0 +1,8 @@
+---
+- hosts: routers
+  tasks:
+    - name: Show qdstat results
+      command: qdstat -a
+      register: qdstat1
+
+    - include: "helpers/get_stdout.yml process={{qdstat1}}"

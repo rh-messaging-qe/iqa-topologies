@@ -1,0 +1,3 @@
+- name: Create lab0 network
+  docker_network:
+    name: lab0
