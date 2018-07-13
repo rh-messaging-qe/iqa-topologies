@@ -1,0 +1,38 @@
+---
+- name: Start Router.A
+  docker_container:
+    name: Router.A
+    image: qdrouterd
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Broker.A
+    volumes:
+      - "{{playbook_dir}}/generated/Router.A:/var/lib/qdrouterd"
+
+- name: Start Router.C
+  docker_container:
+    name: Router.C
+    image: qdrouterd
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Router.A
+    volumes:
+      - "{{playbook_dir}}/generated/Router.C:/var/lib/qdrouterd"
+
+
+- name: Start Router.B
+  docker_container:
+    name: Router.B
+    image: qdrouterd
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Router.A
+    volumes:
+      - "{{playbook_dir}}/generated/Router.B:/var/lib/qdrouterd"
+

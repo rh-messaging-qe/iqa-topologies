@@ -1,0 +1,14 @@
+---
+- name: Start Broker A
+  docker_container:
+    name: Broker.A
+    image: vromero/activemq-artemis
+    state: started
+    networks:
+      - name: lab0
+        links:
+          - Router.I1
+    volumes:
+      - "{{playbook_dir}}/generated/Broker.A/etc:/var/lib/artemis/etc"
+    entrypoint: ""
+    command: "dumb-init -- sh ./artemis run"
