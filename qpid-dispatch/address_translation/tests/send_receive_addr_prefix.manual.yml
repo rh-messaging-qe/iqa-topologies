@@ -1,0 +1,28 @@
+---
+- hosts: Client.B.cli-java
+  tasks:
+    - name: S1 Send 1 messages to Router.B Broker.A.external.abc
+      command: java -jar cli-qpid.jar sender --address Broker.A.external.abc --broker amqp://Router.B.lab0:5672 -c 1 --log-msgs json --timeout 20
+      async: 50
+      poll: 0
+      register: S1
+
+    - name: Verify S1
+      include: "../helpers/check_results.yml wait={{S1}}"
+        
+    - name: Broker manual console check
+      pause:
+        prompt: "Make sure that queue exist and 1 msgs is present admin:admin: http://172.17.0.2:8161/console/"
+
+    - name: R1 Receive 1 messages from Router.B Broker.A.external.abc
+      command: java -jar cli-qpid.jar receiver --address Broker.A.external.abc --broker amqp://Router.B.lab0:5672 -c 1 --log-msgs json --timeout 20
+      async: 50
+      poll: 0
+      register: S1
+    
+    - name: Verify R1
+      include: "../helpers/check_results.yml wait={{S1}}"
+    
+    - name: Broker manual console check
+      pause:
+        prompt: "Make sure that messages was received with receiver 'stdout_lines: ...'"
