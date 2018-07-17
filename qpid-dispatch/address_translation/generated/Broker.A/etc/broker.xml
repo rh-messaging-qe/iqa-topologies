@@ -162,6 +162,21 @@ under the License.
           <queue name="ExpiryQueue"/>
         </anycast>
       </address>
+      <address name="Broker.A.linkroute.queue">
+        <anycast>
+          <queue name="Broker.A.linkroute.queue"/>
+        </anycast>
+      </address>
+      <address name="addExternalPrefix01.Broker.A.external.queue">
+        <anycast>
+          <queue name="addExternalPrefix01.Broker.A.external.queue"/>
+        </anycast>
+      </address>
+      <address name="Broker.A.delexternal.queue">
+        <anycast>
+          <queue name="Broker.A.delexternal.queue"/>
+        </anycast>
+      </address>
     </addresses>
     <!-- Uncomment the following if you want to use the Standard LoggingActiveMQServerPlugin pluging to log in events
       <broker-plugins>
