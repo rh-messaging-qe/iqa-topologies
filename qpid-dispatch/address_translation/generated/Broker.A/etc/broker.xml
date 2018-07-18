@@ -177,6 +177,11 @@ under the License.
           <queue name="Broker.A.delexternal.queue"/>
         </anycast>
       </address>
+      <address name="addExternalPrefix02.Broker.A.adddelexternal.queue">
+        <anycast>
+          <queue name="addExternalPrefix02.Broker.A.adddelexternal.queue"/>
+        </anycast>
+      </address>
     </addresses>
     <!-- Uncomment the following if you want to use the Standard LoggingActiveMQServerPlugin pluging to log in events
       <broker-plugins>
