@@ -1,0 +1,24 @@
+- name: "Stop running containers"
+  docker_container:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - cli-java
+    - cli-rhea
+    - cli-proton-python
+
+- name: "Pull and start client container"
+  docker_container:
+    name: "{{ item.name }}"
+    image: "{{ item.image }}"
+    state: started
+    recreate: yes
+    tty: yes
+    detach: yes
+  with_items:
+    - name: cli-java
+      image: rhmessagingqe/cli-java:latest
+    - name: cli-rhea
+      image: rhmessagingqe/cli-rhea:centos7
+    - name: cli-proton-python
+      image: rhmessagingqe/cli-proton-python:centos7
