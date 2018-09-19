@@ -1,0 +1,8 @@
+- name: "Stop running containers"
+  docker_container:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - cli-java
+    - cli-rhea
+    - cli-proton-python

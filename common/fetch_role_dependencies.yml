@@ -1,0 +1,7 @@
+- name: "Validating if role dependencies are defined"
+  local_action: "stat path='requirements.yml'"
+  register: requirements_found
+
+- name: "Process role dependencies"
+  when: requirements_found.stat.exists
+  command: "ansible-galaxy install -r 'requirements.yml' -p roles"

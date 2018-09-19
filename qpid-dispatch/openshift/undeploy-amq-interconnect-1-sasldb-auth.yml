@@ -1,0 +1,10 @@
+- hosts: localhost
+  tasks:
+    - include: ../../common/stop_client_containers.yml
+
+- hosts: localhost
+  vars:
+    openshift_template_name: "amq-interconnect-1-sasldb-auth"
+    role_action: "delete"
+  roles:
+    - ansible-interconnect-image
