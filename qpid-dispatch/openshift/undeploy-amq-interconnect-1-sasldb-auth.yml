@@ -6,5 +6,6 @@
   vars:
     openshift_template_name: "amq-interconnect-1-sasldb-auth"
     role_action: "delete"
+    sasldb: true
   roles:
     - ansible-interconnect-image
