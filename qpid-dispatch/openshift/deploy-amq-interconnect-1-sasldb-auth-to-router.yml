@@ -1,0 +1,22 @@
+- hosts: localhost
+  tasks:
+    - name: "Required variables provided"
+      assert:
+        that:
+          - "{{ item }} != ''"
+        msg: "{{ item }} is a required variable"
+      with_items:
+        - external_ip
+    - include: ../../common/run_client_containers.yml
+    - include: ../../common/iqa_testsuite_environment.yml
+
+- hosts: localhost
+  vars:
+    openshift_template_name: "amq-interconnect-1-sasldb-auth"
+    openshift_template_variables:
+      - "IMAGE_STREAM_NAMESPACE={{ openshift_project }}"
+      - "ROUTER1_IP={{ ROUTER1_IP }}"
+    inter_router_certs: true
+    sasldb: true
+  roles:
+    - ansible-interconnect-image

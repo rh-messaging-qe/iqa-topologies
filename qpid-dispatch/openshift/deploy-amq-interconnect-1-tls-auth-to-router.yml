@@ -1,0 +1,29 @@
+- hosts: localhost
+  tasks:
+    - name: "Required variables provided"
+      assert:
+        that:
+          - "{{ item }} != ''"
+        msg: "{{ item }} is a required variable"
+      with_items:
+        - external_ip
+    - include: ../../common/run_client_containers.yml
+    - include: ../../common/iqa_testsuite_environment.yml
+
+- hosts: localhost
+  vars:
+    openshift_template_name: "amq-interconnect-1-tls-auth"
+    openshift_template_variables:
+      - "IMAGE_STREAM_NAMESPACE={{ openshift_project }}"
+      - "ROUTER1_IP={{ ROUTER1_IP }}"
+    inter_router_certs: true
+    client_ca: true
+  roles:
+    - ansible-interconnect-image
+
+- hosts: localhost
+  vars:
+    ca_key: tmp/client-ca/ca-key.pem
+    ca_pem: tmp/client-ca/ca.crt
+  tasks:
+    - include: tasks/generate_signed_certificate.yml
