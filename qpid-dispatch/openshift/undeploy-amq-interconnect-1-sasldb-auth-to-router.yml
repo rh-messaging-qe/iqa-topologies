@@ -4,7 +4,8 @@
 
 - hosts: localhost
   vars:
-    openshift_template_name: "amq-interconnect-1-basic"
+    openshift_template_name: "amq-interconnect-1-sasldb-auth-basic-to-router"
     role_action: "delete"
+    sasldb: true
   roles:
     - ansible-interconnect-image
