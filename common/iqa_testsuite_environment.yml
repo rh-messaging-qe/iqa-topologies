@@ -14,7 +14,5 @@
   command: "virtualenv -p {{ venv_cmd }} {{ venv_dir }}"
 
 - name: "Installing iqa-testsuite requirements"
-  pip:
-    virtualenv: "{{ venv_dir }}"
-    virtualenv_command: "{{ venv_cmd }}"
-    requirements: "{{ iqa_testsuite }}/requirements.txt"
+  command: "{{ venv_dir }}/bin/python -m pip install -r {{ iqa_testsuite }}/requirements.txt"
+
