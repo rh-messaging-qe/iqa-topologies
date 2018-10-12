@@ -1,5 +1,5 @@
 - hosts: localhost
-  tasks:
+  pre_tasks:
     - name: "Required variables provided"
       assert:
         that:
@@ -10,14 +10,13 @@
     - include: ../../common/run_client_containers.yml
     - include: ../../common/iqa_testsuite_environment.yml
 
-- hosts: localhost
-  vars:
-    openshift_template_name: "amq-interconnect-1-sasldb-auth-to-router"
-    openshift_template_url: "https://raw.githubusercontent.com/rh-messaging-qe/iqa_topologies/dlenoch-openshift2/qpid-dispatch/openshift/templates/interconnect-1-basic-to-router.yml"
-    openshift_template_variables:
-      - "IMAGE_STREAM_NAMESPACE={{ openshift_project }}"
-      - "ROUTER1_IP={{ ROUTER1_IP }}"
-    inter_router_certs: true
-    sasldb: true
   roles:
     - ansible-interconnect-image
+    - role: ansible-interconnect-image
+      openshift_template_name: "amq-interconnect-1-sasldb-auth-to-router"
+      openshift_template_url: "https://raw.githubusercontent.com/rh-messaging-qe/iqa_topologies/dlenoch-openshift2/qpid-dispatch/openshift/templates/interconnect-1-basic-to-router.yml"
+      openshift_template_variables:
+        - "IMAGE_STREAM_NAMESPACE={{ openshift_project }}"
+        - "ROUTER1_IP={{ ROUTER1_IP }}"
+      inter_router_certs: true
+      sasldb: true
