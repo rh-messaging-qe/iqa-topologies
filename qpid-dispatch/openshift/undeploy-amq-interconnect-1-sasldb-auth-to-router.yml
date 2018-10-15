@@ -1,11 +1,15 @@
 - hosts: localhost
-  tasks:
-    - include: ../../common/stop_client_containers.yml
 
-- hosts: localhost
-  vars:
-    openshift_template_name: "amq-interconnect-1-sasldb-auth-basic-to-router"
-    role_action: "delete"
-    sasldb: true
+  pre_tasks:
+     - include: ../../common/stop_client_containers.yml
+
   roles:
     - ansible-interconnect-image
+    - role: ansible-interconnect-image
+      openshift_template_name: "amq-interconnect-1-sasldb-auth-to-router"
+      openshift_template_url: ""
+      openshift_template_variables:
+        - "IMAGE_STREAM_NAMESPACE={{ openshift_project }}"
+        - "ROUTER1_IP={{ ROUTER1_IP }}"
+      sasldb: true
+      role_action: "delete"
