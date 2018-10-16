@@ -1,8 +1,5 @@
 - hosts: localhost
 
-  pre_tasks:
-     - include: ../../common/stop_client_containers.yml
-
   roles:
     - ansible-interconnect-image
     - role: ansible-interconnect-image

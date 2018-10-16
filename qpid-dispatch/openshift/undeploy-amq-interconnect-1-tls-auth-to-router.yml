@@ -1,8 +1,5 @@
 - hosts: localhost
 
-  pre_tasks:
-    - include: ../../common/stop_client_containers.yml
-
   roles:
     - role: ansible-interconnect-image
       openshift_template_name: "amq-interconnect-1-tls-auth-to-router"
