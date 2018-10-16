@@ -19,6 +19,11 @@ parameters:
   name: APPLICATION_NAME
   value: amq-interconnect
   required: true
+- displayName: Inter-router IP
+  description: IP address to be defined in the connector
+  name: ROUTER1_IP
+  value: 1.2.3.4
+  required: true
 - displayName: ImageStream Namespace
   description: Namespace in which the ImageStreams for Red Hat Middleware images are
     installed. These ImageStreams are normally installed in the openshift namespace.
@@ -26,74 +31,6 @@ parameters:
     different namespace/project.
   name: IMAGE_STREAM_NAMESPACE
   value: openshift
-- displayName: qdrouterd.conf
-  description: The router configuration file
-  name: QDROUTERD_CONF
-  value: |-
-    router {
-        mode: interior
-        id: ${HOSTNAME}
-    }
-    listener {
-        host: 0.0.0.0
-        port: amqp
-        authenticatePeer: no
-        saslMechanisms: ANONYMOUS
-    }
-    listener {
-      host: 0.0.0.0
-      port: 55672
-      role: inter-router
-      authenticatePeer: no
-      saslMechanisms: ANONYMOUS
-    }
-    connector {
-    name: INTER_ROUTER_A
-    addr: ${ROUTER1_IP}
-    port: 55672
-    role: inter-router
-    }
-    sslProfile {
-       name: service_tls
-       certFile: /etc/qpid-dispatch-certs/tls.crt
-       privateKeyFile: /etc/qpid-dispatch-certs/tls.key
-    }
-    listener {
-        host: 0.0.0.0
-        port: amqps
-        authenticatePeer: no
-        saslMechanisms: ANONYMOUS
-        sslProfile: service_tls
-    }
-    listener {
-        host: 0.0.0.0
-        port: 8672
-        authenticatePeer: no
-        saslMechanisms: ANONYMOUS
-        sslProfile: service_tls
-        http: true
-        httpRootDir: /usr/share/qpid-dispatch/console
-    }
-    address {
-        prefix: closest
-        distribution: closest
-    }
-    address {
-        prefix: multicast
-        distribution: multicast
-    }
-    address {
-        prefix: unicast
-        distribution: closest
-    }
-    address {
-        prefix: exclusive
-        distribution: closest
-    }
-    address {
-        prefix: broadcast
-        distribution: multicast
-    }
 objects:
 - kind: Service
   apiVersion: v1
@@ -176,6 +113,8 @@ objects:
             value: "/etc/qpid-dispatch/qdrouterd.conf"
           - name: QDROUTERD_AUTO_MESH_DISCOVERY
             value: "QUERY"
+          - name: ROUTER1_IP
+            value: "${ROUTER1_IP}"
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
@@ -230,4 +169,69 @@ objects:
     labels:
       application: ${APPLICATION_NAME}
   data:
-    qdrouterd.conf: ${QDROUTERD_CONF}
+    qdrouterd.conf: |-
+      router {
+          mode: interior
+          id: ${HOSTNAME}
+      }
+      listener {
+          host: 0.0.0.0
+          port: amqp
+          authenticatePeer: no
+          saslMechanisms: ANONYMOUS
+      }
+      listener {
+        host: 0.0.0.0
+        port: 55672
+        role: inter-router
+        authenticatePeer: no
+        saslMechanisms: ANONYMOUS
+      }
+      connector {
+      name: INTER_ROUTER_A
+      host: ${ROUTER1_IP}
+      port: 55672
+      role: inter-router
+      sslProfile: service_tls
+      }
+      sslProfile {
+         name: service_tls
+         certFile: /etc/qpid-dispatch-certs/tls.crt
+         privateKeyFile: /etc/qpid-dispatch-certs/tls.key
+      }
+      listener {
+          host: 0.0.0.0
+          port: amqps
+          authenticatePeer: no
+          saslMechanisms: ANONYMOUS
+          sslProfile: service_tls
+      }
+      listener {
+          host: 0.0.0.0
+          port: 8672
+          authenticatePeer: no
+          saslMechanisms: ANONYMOUS
+          sslProfile: service_tls
+          http: true
+          httpRootDir: /usr/share/qpid-dispatch/console
+      }
+      address {
+          prefix: closest
+          distribution: closest
+      }
+      address {
+          prefix: multicast
+          distribution: multicast
+      }
+      address {
+          prefix: unicast
+          distribution: closest
+      }
+      address {
+          prefix: exclusive
+          distribution: closest
+      }
+      address {
+          prefix: broadcast
+          distribution: multicast
+      }
