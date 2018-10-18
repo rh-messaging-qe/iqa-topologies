@@ -188,11 +188,11 @@ objects:
         saslMechanisms: ANONYMOUS
       }
       connector {
-      name: INTER_ROUTER_A
-      host: ${ROUTER1_IP}
-      port: 55672
-      role: inter-router
-      sslProfile: service_tls
+        name: INTER_ROUTER_A
+        host: ${ROUTER1_IP}
+        port: 55672
+        role: inter-router
+        saslMechanisms: ANONYMOUS
       }
       sslProfile {
          name: service_tls
