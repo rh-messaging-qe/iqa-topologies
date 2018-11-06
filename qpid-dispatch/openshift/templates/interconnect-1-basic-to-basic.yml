@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: amq-interconnect-1-basic-to-router
+  name: amq-interconnect-1-basic-to-basic
   annotations:
     description: Application template for Red Hat AMQ Interconnect Router.
     iconClass: icon-amq
@@ -10,7 +10,7 @@ metadata:
     version: 1.4.10
     openshift.io/display-name: Red Hat AMQ Interconnect Router 1.x
 labels:
-  template: amq-interconnect-1-basic-to-router
+  template: amq-interconnect-1-basic-to-basic
   xpaas: 1.4.10
 message: A new messaging service has been created in your project.
 parameters:
