@@ -1,11 +1,5 @@
 - name: "Stop running containers"
-  docker_container:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - cli-java
-    - cli-rhea
-    - cli-proton-python
+  include: stop_client_containers.yml
 
 - name: "Pull and start client container"
   docker_container:
