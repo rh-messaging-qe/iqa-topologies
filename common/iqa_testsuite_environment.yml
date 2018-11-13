@@ -1,0 +1,18 @@
+###
+- name: "Setting facts for iqa_testsuite environment"
+  set_fact:
+    iqa_testsuite: "{{ iqa_testsuite_dir | default(lookup('env', 'PWD') + '/iqa_testsuite') }}"
+    venv_cmd: "{{ virtualenv_command | default('python3.6') }}"
+    venv_dir: "{{ virtualenv_dir | default(lookup('env', 'PWD') + '/venv') }}"
+
+- name: "Validate if iqa_testsuite requirements.txt exists"
+  file:
+    name: "{{ iqa_testsuite }}/requirements.txt"
+    state: file
+
+- name: "Creating a virtual environment for the iqa_testsuite"
+  command: "virtualenv -p {{ venv_cmd }} {{ venv_dir }}"
+
+- name: "Installing iqa_testsuite requirements"
+  command: "{{ venv_dir }}/bin/python -m pip install -r {{ iqa_testsuite }}/requirements.txt"
+

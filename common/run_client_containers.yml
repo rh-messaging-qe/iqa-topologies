@@ -1,0 +1,18 @@
+- name: "Stop running containers"
+  include: stop_client_containers.yml
+
+- name: "Pull and start client container"
+  docker_container:
+    name: "{{ item.name }}"
+    image: "{{ item.image }}"
+    state: started
+    recreate: yes
+    tty: yes
+    detach: yes
+  with_items:
+    - name: cli-java
+      image: rhmessagingqe/cli-java:latest
+    - name: cli-rhea
+      image: rhmessagingqe/cli-rhea:centos7
+    - name: cli-proton-python
+      image: rhmessagingqe/cli-proton-python:centos7

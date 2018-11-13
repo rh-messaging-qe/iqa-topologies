@@ -1,0 +1,47 @@
+- name: "Creating directory to hold client certificates"
+  file:
+    path: tmp/client-certs
+    state: directory
+    mode: 0755
+
+- name: "Generating a private key for the clients"
+  shell: "openssl genrsa -out tmp/client-certs/client-key.pem 2048"
+
+- name: "Generating a CSR that will be used by CA to generate a signed certificate"
+  shell: "openssl req -new -batch -subj \"/CN=client\" -key tmp/client-certs/client-key.pem -out tmp/client-certs/client-csr.pem"
+
+- name: "Generating a signed certificate for the client"
+  shell: "openssl x509 -req -in tmp/client-certs/client-csr.pem -CA {{ ca_pem }} -CAkey {{ ca_key }} -out tmp/client-certs/client.crt -CAcreateserial"
+
+- name: "Generating a java keystore"
+  shell: keytool -noprompt -storetype pkcs12 -storepass "redhat" -keypass "redhat" -keystore tmp/client-certs/clientkeystore -genkey -alias client -dname "CN=client"
+
+- name: "Generating a CSR file for the given key"
+  shell: keytool -noprompt -storepass "redhat" -keystore tmp/client-certs/clientkeystore -dname "CN=client" -certreq -alias client -keyalg rsa -file tmp/client-certs/javaclient-csr.pem
+
+- name: "Generating a signed certificate"
+  shell: openssl x509 -req -in tmp/client-certs/javaclient-csr.pem -CA {{ ca_pem }} -CAkey {{ ca_key }} -CAcreateserial -out tmp/client-certs/javaclient.crt -days 1825 -sha256
+
+- name: "Importing CA PEM Certificate into keystore"
+  shell: keytool -noprompt -storepass redhat -import -keystore tmp/client-certs/clientkeystore -file {{ ca_pem }} -alias ca
+
+- name: "Importing signed certificate into keystore"
+  shell: keytool -noprompt -storepass redhat -import -keystore tmp/client-certs/clientkeystore -file tmp/client-certs/javaclient.crt -alias client
+
+- name: "Copying client PEM certificate to client containers"
+  shell: "docker cp tmp/client-certs/client.crt {{ item }}:."
+  with_items:
+    - cli-proton-python
+    - cli-rhea
+
+- name: "Copying client KEY to client containers"
+  shell: "docker cp tmp/client-certs/client-key.pem {{ item }}:."
+  with_items:
+    - cli-proton-python
+    - cli-rhea
+
+- name: "Copying keystore to java client container"
+  shell: "docker cp tmp/client-certs/clientkeystore cli-java:."
+
+- name: "Copying client certificates to iqa_testsuite"
+  shell: "cp tmp/client-certs/client-key.pem tmp/client-certs/client.crt {{ lookup('env', 'PWD') }}"

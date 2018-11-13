@@ -1,0 +1,11 @@
+- hosts: localhost
+
+  roles:
+    - role: ansible-interconnect-image
+      openshift_template_name: "amq-interconnect-1-basic-to-basic"
+      openshift_template_url: "https://raw.githubusercontent.com/rh-messaging-qe/iqa_topologies/devel/qpid-dispatch/openshift/templates/interconnect-1-basic-to-basic.yml"
+      openshift_template_variables:
+        - "IMAGE_STREAM_NAMESPACE={{ openshift_project }}"
+        - "ROUTER1_IP={{ ROUTER1_IP }}"
+      role_action: "delete"
+
