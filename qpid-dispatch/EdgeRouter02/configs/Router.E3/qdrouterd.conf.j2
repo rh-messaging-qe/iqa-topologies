@@ -1,0 +1,21 @@
+router {
+    mode: edge 
+    id: Router.E3
+}
+
+# 5672 opened for management
+listener {
+    host: 0.0.0.0
+    port: 5672
+    authenticatePeer: no
+    saslMechanisms: ANONYMOUS
+}
+
+# Default listener for inter-router
+listener {
+    host: 0.0.0.0
+    port: 5678
+    role: inter-router
+    authenticatePeer: no
+    saslMechanisms: ANONYMOUS
+}

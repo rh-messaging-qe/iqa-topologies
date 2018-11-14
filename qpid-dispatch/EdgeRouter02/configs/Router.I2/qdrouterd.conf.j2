@@ -1,0 +1,30 @@
+router {
+    mode: interior 
+    id: Router.I2
+}
+
+# 5672 opened for management
+listener {
+    host: 0.0.0.0
+    port: 5672
+    authenticatePeer: no
+    saslMechanisms: ANONYMOUS
+}
+
+# Default listener for inter-router
+listener {
+    host: 0.0.0.0
+    port: 5678
+    role: inter-router
+    authenticatePeer: no
+    saslMechanisms: ANONYMOUS
+}
+
+# Listener for edge SASL
+listener {
+    host: 0.0.0.0
+    port: 5678
+    role: edge
+    authenticatePeer: no
+    saslMechanisms: ANONYMOUS
+}
