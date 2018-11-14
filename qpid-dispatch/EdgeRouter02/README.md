@@ -28,3 +28,4 @@ Failover
 - Router.I3 (interior)
 - Router.E1 (edge)
 - Router.E2 (edge)
+- Router.E3 (edge)
