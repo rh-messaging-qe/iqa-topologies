@@ -14,17 +14,66 @@ listener {
 # Default listener for inter-router
 listener {
     host: 0.0.0.0
-    port: 5678
+    port: 5656
     role: inter-router
     authenticatePeer: no
     saslMechanisms: ANONYMOUS
 }
 
-# Listener for edge TLS
+# Connector interior I2
+connector {
+    host: Router.I2
+    port: 5656
+    role: inter-router
+    authenticatePeer: no
+    saslMechanisms: ANONYMOUS
+}
+
+ssl-profile {
+    name: tls-edge
+    caCertFile: /etc/qdrouterd/ca-certificate.pem
+    certFile: /etc/qdrouterd/certificate.pem
+    privateKeyFile: /etc/qdrouterd/private_key.pem
+    password: top_secret_123
+}
+
+# Listener for edge (TLS)
 listener {
     host: 0.0.0.0
     port: 5678
     role: edge
-    authenticatePeer: no
-    saslMechanisms: ANONYMOUS
+    saslMechanisms: EXTERNAL
+    sslProfile: tls-edge
+    authenticatePeer: yes
+}
+
+address {
+    prefix: closest
+    distribution: closest
+}
+
+address {
+    prefix: multicast
+    distribution: multicast
+}
+
+address {
+    prefix: unicast
+    distribution: closest
+}
+
+address {
+    prefix: exclusive
+    distribution: closest
+}
+
+address {
+    prefix: broadcast
+    distribution: multicast
+}
+
+log {
+    module: DEFAULT
+    enable: info+
+    includeSource: yes
 }

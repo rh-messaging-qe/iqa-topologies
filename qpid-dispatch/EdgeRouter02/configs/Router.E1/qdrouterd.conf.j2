@@ -11,11 +11,50 @@ listener {
     saslMechanisms: ANONYMOUS
 }
 
-# Default listener for inter-router
+# 5677 opened for clients
 listener {
     host: 0.0.0.0
-    port: 5678
-    role: inter-router
+    port: 5677
     authenticatePeer: no
     saslMechanisms: ANONYMOUS
+}
+
+# Default edge connector 
+connector {
+    host: Router.I1
+    port: 5678
+    role: edge
+    authenticatePeer: no
+    saslMechanisms: ANONYMOUS
+}
+
+address {
+    prefix: closest
+    distribution: closest
+}
+
+address {
+    prefix: multicast
+    distribution: multicast
+}
+
+address {
+    prefix: unicast
+    distribution: closest
+}
+
+address {
+    prefix: exclusive
+    distribution: closest
+}
+
+address {
+    prefix: broadcast
+    distribution: multicast
+}
+
+log {
+    module: DEFAULT
+    enable: info+
+    includeSource: yes
 }

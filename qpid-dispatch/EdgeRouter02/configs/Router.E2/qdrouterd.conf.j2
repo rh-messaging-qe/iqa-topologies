@@ -1,6 +1,8 @@
 router {
     mode: edge 
     id: Router.E2
+    saslConfigDir: /etc/qdrouterd
+    saslConfigName: sasl.conf
 }
 
 # 5672 opened for management
@@ -11,11 +13,52 @@ listener {
     saslMechanisms: ANONYMOUS
 }
 
-# Default listener for inter-router
+# 5677 opened for clients
 listener {
     host: 0.0.0.0
-    port: 5678
-    role: inter-router
+    port: 5677
     authenticatePeer: no
     saslMechanisms: ANONYMOUS
+}
+
+# Default edge connector 
+connector {
+    host: Router.I2
+    port: 5678
+    role: edge
+    authenticatePeer: no
+    saslMechanisms: SASL
+    saslUsername: test_user
+    saslPassword: test_user_password123
+}
+
+address {
+    prefix: closest
+    distribution: closest
+}
+
+address {
+    prefix: multicast
+    distribution: multicast
+}
+
+address {
+    prefix: unicast
+    distribution: closest
+}
+
+address {
+    prefix: exclusive
+    distribution: closest
+}
+
+address {
+    prefix: broadcast
+    distribution: multicast
+}
+
+log {
+    module: DEFAULT
+    enable: info+
+    includeSource: yes
 }
