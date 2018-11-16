@@ -1,0 +1,42 @@
+---
+- name: Start Edge Router.E1
+  docker_container:
+    name: Router.E1
+    image: enkeys/qpid-dispatch:centos7
+    state: started
+    networks:
+      - name: lab0
+        aliases:
+          - E1
+        links:
+          - I2
+    volumes:
+      - "{{playbook_dir}}/configs/Router.E1:/var/lib/qdrouterd"
+
+- name: Start Edge Router.E2
+  docker_container:
+    name: Router.E2
+    image: enkeys/qpid-dispatch:centos7
+    state: started
+    networks:
+      - name: lab0
+        aliases:
+          - E2
+        links:
+          - I2
+    volumes:
+      - "{{playbook_dir}}/configs/Router.E2:/var/lib/qdrouterd"
+
+- name: Start Edge Router.E3
+  docker_container:
+    name: Router.E3
+    image: enkeys/qpid-dispatch:centos7
+    state: started
+    networks:
+      - name: lab0
+        aliases:
+          - E3
+        links:
+          - I3
+    volumes:
+      - "{{playbook_dir}}/configs/Router.E3:/var/lib/qdrouterd"

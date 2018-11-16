@@ -1,0 +1,42 @@
+---
+- name: Start Internal Router.I1
+  docker_container:
+    name: Router.I1
+    image: enkeys/qpid-dispatch:centos7
+    state: started
+    networks:
+      - name: lab0
+        aliases:
+          - I1
+        links:
+          - I2
+    volumes:
+      - "{{playbook_dir}}/configs/Router.I1:/var/lib/qdrouterd"
+
+- name: Start Internal Router.I2
+  docker_container:
+    name: Router.I2
+    image: enkeys/qpid-dispatch:centos7
+    state: started
+    networks:
+      - name: lab0
+        aliases:
+          - I2
+        links:
+          - II
+    volumes:
+      - "{{playbook_dir}}/configs/Router.I2:/var/lib/qdrouterd"
+
+- name: Start Internal Router.I3
+  docker_container:
+    name: Router.I2
+    image: enkeys/qpid-dispatch:centos7
+    state: started
+    networks:
+      - name: lab0
+        aliases:
+          - I2
+        links:
+          - II
+    volumes:
+      - "{{playbook_dir}}/configs/Router.I3:/var/lib/qdrouterd"

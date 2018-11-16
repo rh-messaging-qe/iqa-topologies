@@ -1,0 +1,9 @@
+- hosts: docker-host
+  tasks:
+    - name: Create lab0 network
+      docker_network:
+        name: lab0
+
+    - include_tasks: tasks/deploy_docker_broker.yml
+    - include_tasks: tasks/deploy_docker_routers_int.yml
+    - include_tasks: tasks/deploy_docker_routers_edg.yml
