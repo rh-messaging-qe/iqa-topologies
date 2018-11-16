@@ -2,7 +2,7 @@
 - name: Start Internal Router.I1
   docker_container:
     name: Router.I1
-    image: enkeys/qpid-dispatch:centos7
+    image: {{ image_router }}
     state: started
     networks:
       - name: lab0
@@ -16,7 +16,7 @@
 - name: Start Internal Router.I2
   docker_container:
     name: Router.I2
-    image: enkeys/qpid-dispatch:centos7
+    image: {{ image_router }}
     state: started
     networks:
       - name: lab0
@@ -29,14 +29,14 @@
 
 - name: Start Internal Router.I3
   docker_container:
-    name: Router.I2
-    image: enkeys/qpid-dispatch:centos7
+    name: Router.I3
+    image: {{ image_router }}
     state: started
     networks:
       - name: lab0
         aliases:
-          - I2
+          - I3
         links:
-          - II
+          - I2
     volumes:
       - "{{playbook_dir}}/configs/Router.I3:/var/lib/qdrouterd"

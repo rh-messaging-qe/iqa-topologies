@@ -1,7 +1,7 @@
 - name: Start Broker A
   docker_container:
     name: Broker.A
-    image: vromero/activemq-artemis
+    image: {{ image_broker }}
     state: started
     networks:
       - name: lab0
@@ -15,7 +15,7 @@
 - name: Start Broker B
   docker_container:
     name: Broker.A
-    image: vromero/activemq-artemis
+    image: {{ image_broker }}
     state: started
     networks:
       - name: lab0

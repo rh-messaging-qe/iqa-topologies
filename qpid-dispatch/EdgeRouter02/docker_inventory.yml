@@ -1,0 +1,40 @@
+all:
+    hosts:
+        docker-host:
+            ansible_connection: localhost
+    vars:
+        ansible_connection: docker
+        ansible_user: root
+        executor: docker
+        image_router: enkeys/qpid-dispatch:centos7
+        image_broker: vromero/activemq-artemis
+    children:
+    routers:
+        children:
+            router-internal:
+                hosts:
+                    Router.I1:
+                    Router.I2:
+                    Router.I3:
+            router-edge:
+                hosts:
+                    Router.E1:
+                    Router.E2:
+                    Router.E3:
+        vars:
+            component: router
+            implementation: dispatch
+            service: qdrouterd
+            router_port: 5672
+            router_config: /etc/qpid-dispatch/qdrouterd.conf
+
+    clients:
+        hosts:
+            cli-java:
+                implementation: java
+            cli-proton-python:
+                implementation: python
+            cli-rhea:
+                implementation: nodejs
+        vars:
+            component: client
