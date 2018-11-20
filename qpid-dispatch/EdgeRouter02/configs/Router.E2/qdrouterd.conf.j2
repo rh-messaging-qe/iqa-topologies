@@ -57,6 +57,48 @@ address {
     distribution: multicast
 }
 
+connector {
+    name: broker1
+    role: route-container
+    host: A
+    port: 61616
+    sasl-mechanisms: ANONYMOUS
+}
+
+address {
+    prefix: out.event
+    waypoint: yes
+}
+
+autoLink {
+    addr: out.event
+    dir: in
+    connection: broker1
+}
+
+autoLink {
+    addr: out.event
+    dir: out
+    connection: broker1
+}
+
+address {
+    prefix: in.event
+    waypoint: yes
+}
+
+autoLink {
+    addr: in.event
+    dir: in
+    connection: broker1
+}
+
+autoLink {
+    addr: in.event
+    dir: out
+    connection: broker1
+}
+
 log {
     module: DEFAULT
     enable: info+

@@ -23,5 +23,6 @@
           - B
         links:
           - I2
+          - A
     volumes:
-      - "{{playbook_dir}}/configs/Broker.A/etc:/var/lib/artemis/etc"
+      - "{{playbook_dir}}/configs/Broker.B/etc:/var/lib/artemis/etc"
