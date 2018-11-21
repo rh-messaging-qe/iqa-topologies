@@ -2,7 +2,7 @@
 - name: Start Edge Router.E1
   docker_container:
     name: Router.E1
-    image: {{ image_router }}
+    image: "{{ image_router }}"
     state: started
     networks:
       - name: lab0
@@ -16,7 +16,7 @@
 - name: Start Edge Router.E2
   docker_container:
     name: Router.E2
-    image: {{ image_router }}
+    image: "{{ image_router }}"
     state: started
     networks:
       - name: lab0
@@ -30,7 +30,7 @@
 - name: Start Edge Router.E3
   docker_container:
     name: Router.E3
-    image: {{ image_router }}
+    image: "{{ image_router }}"
     state: started
     networks:
       - name: lab0

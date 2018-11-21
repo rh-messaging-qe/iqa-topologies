@@ -2,7 +2,7 @@
 - name: Start Internal Router.I1
   docker_container:
     name: Router.I1
-    image: {{ image_router }}
+    image: "{{ image_router }}"
     state: started
     networks:
       - name: lab0
@@ -16,7 +16,7 @@
 - name: Start Internal Router.I2
   docker_container:
     name: Router.I2
-    image: {{ image_router }}
+    image: "{{ image_router }}"
     state: started
     networks:
       - name: lab0
@@ -30,7 +30,7 @@
 - name: Start Internal Router.I3
   docker_container:
     name: Router.I3
-    image: {{ image_router }}
+    image: "{{ image_router }}"
     state: started
     networks:
       - name: lab0

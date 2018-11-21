@@ -1,7 +1,7 @@
 all:
     hosts:
         docker-host:
-            ansible_connection: localhost
+            ansible_connection: local
     vars:
         ansible_connection: docker
         ansible_user: root
