@@ -108,7 +108,7 @@ under the License.
     </acceptors>
 
     <connectors>
-        <connector name="netty-connector">tcp://B:61616</connector>
+        <connector name="netty-connector">tcp://127.0.0.1:61616</connector>
     </connectors>
 
     <broadcast-groups>
