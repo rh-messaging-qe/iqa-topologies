@@ -23,31 +23,75 @@ Failover
 
 ### Routers
 
-- Router.I1 (interior)
-  - 5672 open for managements
-  - 5656 open for inter-router
-  - 5678 open for edges (SASL Anonymous)
-- Router.I2 (interior)
-  - 5672 open for managements
-  - 5656 open for inter-router
-  - 5678 open for edges (SASL Auth. required)
-- Router.I3 (interior)
-  - 5672 open for managements
-  - 5656 open for inter-router
-  - 5678 open for edges (TLS Aut. requierd)
+#### Router.I1 (interior)
 
-- Router.E1 (edge)
-  - 5672 open for managements
-  - 5677 open for clients (SASL Anonymous)
-- Router.E2 (edge)
-  - 5672 open for managements
-  - 5677 open for clients (SASL Auth. required)
-- Router.E3 (edge)
-  - 5672 open for managements
-  - 5677 open for clients (TLS Aut. requierd)
+Listeners:
+
+- 5672 open for managements
+- 5656 open for inter-router
+- 5678 open for edges (SASL Anonymous)
+
+#### Router.I2 (interior)
+
+Listeners
+
+- 5672 open for managements
+- 5656 open for inter-router
+- 5678 open for edges  (SASL Auth. required)
+
+Connectors
+
+- To Router.I1:5656 inter-router
+
+#### Router.I3 (interior)
+
+Listeners
+
+- 5672 open for managements
+- 5656 open for inter-router
+- 5678 open for edges (TLS Aut. requierd)
+
+Connectors
+
+- To Router.I2:5656 inter-router
+
+#### Router.E1 (edge)
+
+Listeners
+
+- 5672 open for managements
+- 5677 open for clients (SASL Anonymous)
+
+Connectors
+
+- To Router.I1 5678:edge
+
+#### Router.E2 (edge)
+
+Listeners
+
+- 5672 open for managements
+- 5677 open for clients (SASL Auth. required)
+
+Connectors
+
+- To Router.I2:5678 edge
+
+#### Router.E3 (edge)
+
+Listeners
+
+- 5672 open for managements
+- 5677 open for clients (TLS Aut. requierd)
+
+Connectors
+
+- To Router.I3:5678 edge
 
 ## Deployment
 
+Docker playbook:
+
 ```bash
-ansible-playbook -i inventory.yml playbook.yml
+ansible-playbook -i docker_inventory.yml deploy_docker.yml
 ```
