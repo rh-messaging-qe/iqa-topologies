@@ -6,7 +6,7 @@ all:
         ansible_connection: docker
         ansible_user: root
         executor: docker
-        image_router: enkeys/qpid-dispatch:centos7
+        image_router: enkeys/qpid-dispatch:latest
         image_broker: vromero/activemq-artemis:latest-alpine
     children:
         routers:
