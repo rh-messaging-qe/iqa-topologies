@@ -14,7 +14,7 @@
 
 - name: Start Broker B
   docker_container:
-    name: Broker.A
+    name: Broker.B
     image: "{{ image_broker }}"
     state: started
     networks:
