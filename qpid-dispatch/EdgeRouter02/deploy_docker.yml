@@ -3,6 +3,9 @@
     - name: Create lab0 network
       docker_network:
         name: lab0
+        force: yes
+        ipam_options:
+          subnet: '192.168.8.0/24'
 
     - include_tasks: tasks/deploy_docker_broker.yml
     - include_tasks: tasks/deploy_docker_routers_int.yml
