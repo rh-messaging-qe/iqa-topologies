@@ -12,5 +12,5 @@ ha_check_for_live_server: true
 ha_group_name: interior-router-group
 ha_role: master
 ha_slave_allow_failback: true
-ha_vote_on_replication_failure: true
+ha_vote_on_replication_failure: false
 log_level_all: INFO
