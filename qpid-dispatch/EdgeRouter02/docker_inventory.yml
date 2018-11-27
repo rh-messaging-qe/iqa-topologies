@@ -7,7 +7,7 @@ all:
         ansible_user: root
         executor: docker
         image_router: enkeys/qpid-dispatch:latest
-        image_broker: vromero/activemq-artemis:latest-alpine
+        image_broker: rhmessagingqe/artemis:fedora27
     children:
         routers:
             children:

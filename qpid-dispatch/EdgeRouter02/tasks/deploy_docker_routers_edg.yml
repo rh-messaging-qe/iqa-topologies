@@ -1,9 +1,23 @@
 ---
+- name: Remove Edge Router containers
+  docker_container:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - Router.E1
+    - Router.E2
+    - Router.E3
+
+- name: Wait 10 seconds before recreating edge routers
+  pause:
+    seconds: 10
+
 - name: Start Edge Router.E1
   docker_container:
     name: Router.E1
     image: "{{ image_router }}"
     state: started
+    recreate: yes
     networks:
       - name: lab0
         aliases:
@@ -18,6 +32,7 @@
     name: Router.E2
     image: "{{ image_router }}"
     state: started
+    recreate: yes
     networks:
       - name: lab0
         aliases:
@@ -32,11 +47,14 @@
     name: Router.E3
     image: "{{ image_router }}"
     state: started
+    recreate: yes
     networks:
       - name: lab0
         aliases:
           - E3
         links:
           - I3
+          - brokere3m
+          - brokere3s
     volumes:
       - "{{playbook_dir}}/configs/Router.E3:/var/lib/qdrouterd"

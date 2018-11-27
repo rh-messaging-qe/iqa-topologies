@@ -1,15 +1,30 @@
 ---
+- name: Remove Interior Router containers
+  docker_container:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - Router.I1
+    - Router.I2
+    - Router.I3
+
+- name: Wait 10 seconds before recreating interior routers
+  pause:
+    seconds: 10
+
 - name: Start Internal Router.I1
   docker_container:
     name: Router.I1
     image: "{{ image_router }}"
     state: started
+    recreate: yes
     networks:
       - name: lab0
         aliases:
           - I1
         links:
           - I2
+          - E1
     volumes:
       - "{{playbook_dir}}/configs/Router.I1:/var/lib/qdrouterd"
 
@@ -18,12 +33,15 @@
     name: Router.I2
     image: "{{ image_router }}"
     state: started
+    recreate: yes
     networks:
       - name: lab0
         aliases:
           - I2
         links:
-          - II
+          - I1
+          - brokeri2m
+          - brokeri2s
     volumes:
       - "{{playbook_dir}}/configs/Router.I2:/var/lib/qdrouterd"
 
@@ -32,6 +50,7 @@
     name: Router.I3
     image: "{{ image_router }}"
     state: started
+    recreate: yes
     networks:
       - name: lab0
         aliases:
