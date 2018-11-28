@@ -1,14 +1,5 @@
 ---
-- name: Remove Edge Router containers
-  docker_container:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - Router.E1
-    - Router.E2
-    - Router.E3
-
-- name: Wait 10 seconds before recreating edge routers
+- name: Wait 10 seconds before creating edge routers
   pause:
     seconds: 10
 

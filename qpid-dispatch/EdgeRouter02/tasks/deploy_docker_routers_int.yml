@@ -1,14 +1,5 @@
 ---
-- name: Remove Interior Router containers
-  docker_container:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - Router.I1
-    - Router.I2
-    - Router.I3
-
-- name: Wait 10 seconds before recreating interior routers
+- name: Wait 10 seconds before creating interior routers
   pause:
     seconds: 10
 
