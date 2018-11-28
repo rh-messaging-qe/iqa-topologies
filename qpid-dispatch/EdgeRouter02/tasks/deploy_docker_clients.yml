@@ -5,7 +5,8 @@
     image: rhmessagingqe/cli-proton-python
     state: started
     recreate: yes
-    command: "while :; do sleep 2073600; done"
+    command: "sh"
+    interactive: yes
     networks:
       - name: lab0
         aliases:
@@ -28,7 +29,8 @@
     image: rhmessagingqe/cli-rhea
     state: started
     recreate: yes
-    command: "while :; do sleep 2073600; done"
+    command: "sh"
+    interactive: yes
     networks:
       - name: lab0
         aliases:
@@ -51,7 +53,8 @@
     image: rhmessagingqe/cli-java
     state: started
     recreate: yes
-    command: "while :; do sleep 2073600; done"
+    command: "sh"
+    interactive: yes
     networks:
       - name: lab0
         aliases:
