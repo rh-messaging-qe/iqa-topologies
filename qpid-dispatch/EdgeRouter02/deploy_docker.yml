@@ -1,3 +1,7 @@
+---
+# Undeploy previus topology if exist
+- import_playbook: undeploy_docker.yml
+
 - hosts: docker-host
   tasks:
     - name: Create lab0 network
@@ -7,6 +11,7 @@
         ipam_options:
           subnet: '192.168.8.0/24'
 
-    - include_tasks: tasks/deploy_docker_broker.yml
+    - include_tasks: tasks/deploy_docker_brokers.yml
     - include_tasks: tasks/deploy_docker_routers_int.yml
     - include_tasks: tasks/deploy_docker_routers_edg.yml
+    - include_tasks: tasks/deploy_docker_clients.yml
