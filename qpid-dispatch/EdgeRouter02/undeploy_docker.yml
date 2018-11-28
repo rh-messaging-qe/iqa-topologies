@@ -17,7 +17,7 @@
         - Router.E3
         - cli-java
         - cli-proton-python
-        - cli-nodejs
+        - cli-rhea
 
     - name: Remove lab0 network
       docker_network:
