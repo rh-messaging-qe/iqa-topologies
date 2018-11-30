@@ -22,11 +22,13 @@
           - Router.E1
           - Router.E2
           - Router.E3
+    volumes:
+      - "{{playbook_dir}}/configs/cli-proton-python:/var/lib/cli-proton-python"
 
 - name: Deploy RHEA NodeJS client cli-rhea
   docker_container:
     name: cli-rhea
-    image: rhmessagingqe/cli-rhea
+    image: rhmessagingqe/cli-rhea:centos7
     state: started
     recreate: yes
     command: "sh"
@@ -46,6 +48,8 @@
           - Router.E1
           - Router.E2
           - Router.E3
+    volumes:
+      - "{{playbook_dir}}/configs/cli-rhea:/var/lib/cli-rhea"
 
 - name: Deploy clients cli-java
   docker_container:
@@ -70,3 +74,5 @@
           - Router.E1
           - Router.E2
           - Router.E3
+    volumes:
+      - "{{playbook_dir}}/configs/cli-java:/var/lib/cli-java"
