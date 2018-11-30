@@ -15,3 +15,11 @@
     - include_tasks: tasks/deploy_docker_routers_int.yml
     - include_tasks: tasks/deploy_docker_routers_edg.yml
     - include_tasks: tasks/deploy_docker_clients.yml
+    - include_tasks: tasks/delay_container.yml
+      vars:
+        delay_victim: Router.E3
+        delay_time: 500ms
+    - include_tasks: tasks/delay_container.yml
+      vars:
+        delay_victim: Router.I2
+        delay_time: 500ms
