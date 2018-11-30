@@ -27,7 +27,28 @@ all:
                 service: qdrouterd
                 router_port: 5672
                 router_config: /etc/qpid-dispatch/qdrouterd.conf
-
+        brokers:
+            children:
+                broker-master:
+                    hosts:
+                        Broker.M.E3:
+                        Broker.M.I2:
+                broker-slave:
+                    hosts:
+                        Broker.S.E3:
+                        Broker.S.I2:
+                broker-cluster-E3:
+                    hosts:
+                        Broker.M.E3:
+                        Broker.S.E3:
+                broker-cluster-I2:
+                    hosts:
+                        Broker.M.I2:
+                        Broker.S.I2:
+            vars:
+                component: broker
+                implementation: artemis
+                service: artemis
         clients:
             hosts:
                 cli-java:
