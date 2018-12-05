@@ -23,7 +23,8 @@
           - Router.E2
           - Router.E3
     volumes:
-      - "{{playbook_dir}}/configs/cli-proton-python:/var/lib/cli-proton-python"
+      - "{{playbook_dir}}/clients-data/cli-proton-python:/var/lib/cli-proton-python"
+      - "{{playbook_dir}}/clients-data/msgs:/var/lib/cli-proton-python/msgs"
 
 - name: Deploy RHEA NodeJS client cli-rhea
   docker_container:
@@ -49,7 +50,8 @@
           - Router.E2
           - Router.E3
     volumes:
-      - "{{playbook_dir}}/configs/cli-rhea:/var/lib/cli-rhea"
+      - "{{playbook_dir}}/clients-data/cli-rhea:/var/lib/cli-rhea"
+      - "{{playbook_dir}}/clients-data/msgs:/var/lib/cli-rhea/msgs"
 
 - name: Deploy clients cli-java
   docker_container:
@@ -75,4 +77,5 @@
           - Router.E2
           - Router.E3
     volumes:
-      - "{{playbook_dir}}/configs/cli-java:/var/lib/cli-java"
+      - "{{playbook_dir}}/clients-data/cli-java:/var/lib/cli-java"
+      - "{{playbook_dir}}/clients-data/msgs:/var/lib/cli-java/msgs"

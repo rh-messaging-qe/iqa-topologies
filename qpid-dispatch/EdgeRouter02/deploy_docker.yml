@@ -11,10 +11,18 @@
         ipam_options:
           subnet: '192.168.8.0/24'
 
+    # Broker deployment
     - include_tasks: tasks/deploy_docker_brokers.yml
+
+    # Router deployment
     - include_tasks: tasks/deploy_docker_routers_int.yml
     - include_tasks: tasks/deploy_docker_routers_edg.yml
+
+    # Client deployment
+    - include_tasks: tasks/client_data.yml
     - include_tasks: tasks/deploy_docker_clients.yml
+
+    # Delay specifics containers
     - include_tasks: tasks/delay_container.yml
       vars:
         delay_victim: Router.E3

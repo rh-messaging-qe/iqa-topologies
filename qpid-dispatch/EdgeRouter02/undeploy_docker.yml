@@ -19,6 +19,11 @@
         - cli-proton-python
         - cli-rhea
 
+    - name: Remove clients-data
+      file:
+        state: absent
+        path: "{{ playbook_dir }}/clients-data"
+
     - name: Remove lab0 network
       docker_network:
         name: lab0

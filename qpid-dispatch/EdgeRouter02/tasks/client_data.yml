@@ -1,0 +1,27 @@
+---
+  - name: Create directory for large messages
+    file:
+      path: "{{ playbook_dir }}/clients-data"
+      state: directory
+
+  - name: Create directory for certificates
+    file:
+      path: "{{ playbook_dir }}/clients-data"
+      state: directory
+
+  - name: cli-proton-python config
+    synchronize:
+      src: "{{ playbook_dir }}/configs/cli-proton-python/"
+      dest: "{{ playbook_dir }}/clients-data/cli-proton-python"
+
+  - name: cli-java config
+    synchronize:
+      src: "{{ playbook_dir }}/configs/cli-java/"
+      dest: "{{ playbook_dir }}/clients-data/cli-java"
+  
+  - name: cli-rhea config
+    synchronize:
+      src: "{{ playbook_dir }}/configs/cli-rhea/"
+      dest: "{{ playbook_dir }}/clients-data/cli-rhea"
+
+  - include_tasks: tasks/generate_messages.yml
