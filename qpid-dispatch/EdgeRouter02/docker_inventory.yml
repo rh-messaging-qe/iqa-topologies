@@ -6,6 +6,7 @@ all:
         ansible_connection: docker
         ansible_user: root
         executor: docker
+        executor_docker_network: lab0
         image_router: enkeys/qpid-dispatch:latest
         image_broker: rhmessagingqe/artemis:fedora27
     children:
@@ -32,23 +33,19 @@ all:
                 broker-master:
                     hosts:
                         Broker.M.E3:
+                            broker_name: amqmastere
                         Broker.M.I2:
+                            broker_name: amqmasteri
                 broker-slave:
                     hosts:
                         Broker.S.E3:
+                            broker_name: amqslavee
                         Broker.S.I2:
-                broker-cluster-E3:
-                    hosts:
-                        Broker.M.E3:
-                        Broker.S.E3:
-                broker-cluster-I2:
-                    hosts:
-                        Broker.M.I2:
-                        Broker.S.I2:
+                            broker_name: amqslavei
             vars:
                 component: broker
                 implementation: artemis
-                service: artemis
+                broker_path: /opt/broker1
         clients:
             hosts:
                 cli-java:
