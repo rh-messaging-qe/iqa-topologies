@@ -25,7 +25,6 @@ all:
             vars:
                 component: router
                 implementation: dispatch
-                service: qdrouterd
                 router_port: 5672
                 router_config: /etc/qpid-dispatch/qdrouterd.conf
         brokers:
