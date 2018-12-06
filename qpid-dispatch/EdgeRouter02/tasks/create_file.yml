@@ -1,5 +1,5 @@
 - name: Generate file
-  shell: head -c {{ size }} < /dev/zero | tr '\0' '\060' > {{ name }}.txt
+  shell: head -c {{ size }} < /dev/zero | tr '\0' '\060' > {{ name }}
   args:
     chdir: "{{ path }}"
-    creates: "{{ name }}.txt"
+    creates: "{{ name }}"
