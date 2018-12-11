@@ -18,6 +18,7 @@
         - cli-java
         - cli-proton-python
         - cli-rhea
+      ignore_errors: true
 
     - name: Remove clients-data
       file:

@@ -40,6 +40,6 @@
       path: "{{ playbook_dir }}/clients-data/msgs"
 
   - name: Generate checksum
-    shell: "shasum msg_* > msgs.sha1sum"
+    shell: "sha1sum msg_* > msgs.sha1sum"
     args:
       chdir: "{{ playbook_dir }}/clients-data/msgs/"

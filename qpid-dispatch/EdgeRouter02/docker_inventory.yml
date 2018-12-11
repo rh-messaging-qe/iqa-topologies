@@ -7,7 +7,7 @@ all:
         ansible_user: root
         executor: docker
         executor_docker_network: lab0
-        image_router: enkeys/qpid-dispatch:latest
+        image_router: rhmessagingqe/qpid-dispatch:ubuntu1804
         image_broker: rhmessagingqe/artemis:fedora27
     children:
         routers:
