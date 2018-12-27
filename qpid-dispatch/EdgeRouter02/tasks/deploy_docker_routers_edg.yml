@@ -7,6 +7,7 @@
   docker_container:
     name: Router.E1
     image: "{{ image_router }}"
+    command: "qdrouterd -c /var/lib/qdrouterd/qdrouterd.conf"
     state: started
     recreate: yes
     networks:
@@ -22,6 +23,7 @@
   docker_container:
     name: Router.E2
     image: "{{ image_router }}"
+    command: "qdrouterd -c /var/lib/qdrouterd/qdrouterd.conf"
     state: started
     recreate: yes
     networks:
@@ -37,6 +39,7 @@
   docker_container:
     name: Router.E3
     image: "{{ image_router }}"
+    command: "qdrouterd -c /var/lib/qdrouterd/qdrouterd.conf"
     state: started
     recreate: yes
     networks:

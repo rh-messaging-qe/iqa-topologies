@@ -26,8 +26,8 @@
     - include_tasks: tasks/delay_container.yml
       vars:
         delay_victim: Router.E3
-        delay_time: 200ms
+        delay_time: 100ms
     - include_tasks: tasks/delay_container.yml
       vars:
         delay_victim: Router.I3
-        delay_time: 200ms
+        delay_time: 100ms
