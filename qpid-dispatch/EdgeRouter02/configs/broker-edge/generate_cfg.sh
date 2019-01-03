@@ -6,3 +6,5 @@ amqcfg -t artemis/2.6.0 -p artemis/2.6.0/ha/replication.yaml --tune tuning.maste
 for instance in master slave; do
     sed -i -e '/<\/addresses>/r broker_addresses.xml' -e 's/<\/addresses>//g' ${instance}/broker.xml
 done
+
+sed -i -e 's/:8161/:8162/g' slave/bootstrap.xml

@@ -12,7 +12,8 @@
           subnet: '192.168.8.0/24'
 
     # Broker deployment
-    - include_tasks: tasks/deploy_docker_brokers.yml
+    - include_tasks: tasks/deploy_docker_brokers_int.yml
+    - include_tasks: tasks/deploy_docker_brokers_edg.yml
 
     # Router deployment
     - include_tasks: tasks/deploy_docker_routers_int.yml

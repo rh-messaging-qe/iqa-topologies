@@ -1,0 +1,68 @@
+all:
+    vars:
+        ansible_user: root
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        image_broker: rhmessagingqe/artemis:fedora27
+    children:
+        routers:
+            children:
+                router-internal:
+                    hosts:
+                        Router.I1:
+                            ansible_host: "{{ lookup('env', 'Router_I1') or 'Router_I1' }}"
+                        Router.I2:
+                            ansible_host: "{{ lookup('env', 'Router_I2') or 'Router_I2' }}"
+                        Router.I3:
+                            ansible_host: "{{ lookup('env', 'Router_I3') or 'Router_I3' }}"
+                router-edge:
+                    hosts:
+                        Router.E1:
+                            ansible_host: "{{ lookup('env', 'Router_E1') or 'Router_E1' }}"
+                        Router.E2:
+                            ansible_host: "{{ lookup('env', 'Router_E2') or 'Router_E2' }}"
+                        Router.E3:
+                            ansible_host: "{{ lookup('env', 'Router_E3') or 'Router_E3' }}"
+            vars:
+                component: router
+                implementation: dispatch
+                router_port: 5672
+                router_config: /var/lib/qdrouterd/qdrouterd.conf
+        brokers:
+            children:
+                broker-master:
+                    hosts:
+                        Broker.M.E3:
+                            broker_name: amqmastere
+                            ansible_docker_extra_args: "-H tcp://{{ lookup('env', 'Router_E3') or 'Router_E3' }}:2375"
+                            broker_web_port: 8161
+                        Broker.M.I2:
+                            broker_name: amqmasteri
+                            ansible_docker_extra_args: "-H tcp://{{ lookup('env', 'Router_I2') or 'Router_I2' }}:2375"
+                            broker_web_port: 8161
+                broker-slave:
+                    hosts:
+                        Broker.S.E3:
+                            broker_name: amqslavee
+                            ansible_docker_extra_args: "-H tcp://{{ lookup('env', 'Router_E3') or 'Router_E3' }}:2375"
+                            broker_web_port: 8162
+                        Broker.S.I2:
+                            broker_name: amqslavei
+                            ansible_docker_extra_args: "-H tcp://{{ lookup('env', 'Router_I2') or 'Router_I2' }}:2375"
+                            broker_web_port: 8162
+            vars:
+                component: broker
+                implementation: artemis
+                broker_path: /opt/broker1
+                ansible_connection: docker
+                executor: docker
+                executor_docker_network: lab0
+        clients:
+            hosts:
+                cli-java:
+                    implementation: java
+                cli-proton-python:
+                    implementation: python
+                cli-rhea:
+                    implementation: nodejs
+            vars:
+                component: client

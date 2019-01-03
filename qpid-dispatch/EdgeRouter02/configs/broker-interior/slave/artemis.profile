@@ -1,4 +1,4 @@
-# This configuration file artemis.profile.jinja2 has been generated at 2018-11-27 17:25 by amqcfg tool
+# This configuration file artemis.profile.jinja2 has been generated at 2019-01-03 16:43 by amqcfg tool
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file

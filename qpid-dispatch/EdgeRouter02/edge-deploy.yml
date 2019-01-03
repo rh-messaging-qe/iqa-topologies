@@ -1,0 +1,185 @@
+####- hosts: routers
+####  tasks:
+####    # Create config directory
+####    - name: "Creating router configuration directory"
+####      file:
+####        path: /var/lib/qdrouterd
+####        state: directory
+####        mode: 0755
+####
+####- hosts: Router.I1
+####  tasks:
+####    # Copy Interior Configuration files
+####    - name: "Router.I1 - Copying router configuration files"
+####      copy:
+####        src: "{{ item }}"
+####        dest: /var/lib/qdrouterd
+####      with_fileglob:
+####        - "{{ playbook_dir }}/configs/Router.I1/*"
+####        
+####- hosts: Router.I2
+####  tasks:
+####    # Copy Interior Configuration files
+####    - name: "Router.I2 - Copying router configuration files"
+####      copy:
+####        src: "{{ item }}"
+####        dest: /var/lib/qdrouterd
+####      with_fileglob:
+####        - "{{ playbook_dir }}/configs/Router.I2/*"
+####        
+####- hosts: Router.I3
+####  tasks:
+####    # Copy Interior Configuration files
+####    - name: "Router.I3 - Copying router configuration files"
+####      copy:
+####        src: "{{ item }}"
+####        dest: /var/lib/qdrouterd
+####      with_fileglob:
+####        - "{{ playbook_dir }}/configs/Router.I3/*"
+####        
+####- hosts: Router.E1
+####  tasks:
+####    # Copy Edge Configuration files
+####    - name: "Router.E1 - Copying router configuration files"
+####      copy:
+####        src: "{{ item }}"
+####        dest: /var/lib/qdrouterd
+####      with_fileglob:
+####        - "{{ playbook_dir }}/configs/Router.E1/*"
+####        
+####- hosts: Router.E2
+####  tasks:
+####    # Copy Edge Configuration files
+####    - name: "Router.E2 - Copying router configuration files"
+####      copy:
+####        src: "{{ item }}"
+####        dest: /var/lib/qdrouterd
+####      with_fileglob:
+####        - "{{ playbook_dir }}/configs/Router.E2/*"
+####        
+####- hosts: Router.E3
+####  tasks:
+####    # Copy Edge Configuration files
+####    - name: "Router.E3 - Copying router configuration files"
+####      copy:
+####        src: "{{ item }}"
+####        dest: /var/lib/qdrouterd
+####      with_fileglob:
+####        - "{{ playbook_dir }}/configs/Router.E3/*"
+####        
+####- hosts: routers
+####  tasks:
+####    # Populating /etc/hosts across all routers
+####    - name: Add IP address of all hosts to all hosts
+####      lineinfile:
+####        dest: /etc/hosts
+####        regexp: '.*{{ item }}$'
+####        line: "{{ hostvars[item].ansible_host }} {{item}}"
+####        state: present
+####      when: hostvars[item].ansible_host is defined
+####      with_items: "{{ groups.all }}"
+####
+####    - name: Allow access to TCP ports
+####      shell: "iptables -I INPUT -p tcp --dport {{ item }} -j ACCEPT"
+####      with_items:
+####        - "2375"
+####        - "5656:5678"
+####        - "8161:8162"
+####        - "61616"
+####
+####- hosts: routers
+####  roles:
+####    - role: ansible-service-creator
+####      service_opts:
+####        qdrouterdcustom:
+####          Enabled: Yes
+####          Started: Yes
+####          ExecStart: "/usr/sbin/qdrouterd -c /var/lib/qdrouterd/qdrouterd.conf"
+####          User: "qdrouterd"
+####          Group: "qdrouterd"
+####          State: "started"
+
+- hosts: Router.I2
+  tasks:
+    - name: Create lab0 network
+      docker_network:
+        name: lab0
+        force: yes
+        ipam_options:
+          subnet: '192.168.8.0/24'
+
+####    - name: Redirecting TCP port 8161 to Broker.M.I2 Container IP
+####      shell: "iptables -t nat -I PREROUTING -p tcp -d {{ lookup('env', 'Router.I2') }} --dport 8161 -j DNAT --to 192.168.8.10"
+####
+####    - name: Redirecting TCP port 8162 to Broker.S.I2 Container IP
+####      shell: "iptables -t nat -I PREROUTING -p tcp -d {{ lookup('env', 'Router.I2') }} --dport 8162 -j DNAT --to 192.168.8.20"
+
+    # Create config directory
+    - name: "Creating broker configuration directory"
+      file:
+        path: "{{ playbook_dir }}/configs/broker-interior/{{ item }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - master
+        - slave 
+
+    # Copy Broker Interior Configuration files
+    - name: "Router.I1 - Copying master broker configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: "{{ playbook_dir }}/configs/broker-interior/master"
+      with_fileglob:
+        - "{{ playbook_dir }}/configs/broker-interior/master/*"
+
+    - name: "Router.I1 - Copying slave broker configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: "{{ playbook_dir }}/configs/broker-interior/slave"
+      with_fileglob:
+        - "{{ playbook_dir }}/configs/broker-interior/slave/*"
+
+    - name: "Enabling write access to containers"
+      command: "chcon -Rt svirt_sandbox_file_t {{ playbook_dir }}/configs/broker-interior"
+
+    - include_tasks: tasks/deploy_docker_brokers_int.yml
+
+- hosts: Router.E3
+  tasks:
+    - name: Create lab0 network
+      docker_network:
+        name: lab0
+        force: yes
+        ipam_options:
+          subnet: '192.168.8.0/24'
+
+    # Create config directory
+    - name: "Creating broker configuration directory"
+      file:
+        path: "{{ playbook_dir }}/configs/broker-edge/{{ item }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - master
+        - slave 
+
+    # Copy Broker Edge Configuration files
+    - name: "Router.E3 - Copying master broker configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: "{{ playbook_dir }}/configs/broker-edge/master"
+      with_fileglob:
+        - "{{ playbook_dir }}/configs/broker-edge/master/*"
+
+    - name: "Router.E3 - Copying slave broker configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: "{{ playbook_dir }}/configs/broker-edge/slave"
+      with_fileglob:
+        - "{{ playbook_dir }}/configs/broker-edge/slave/*"
+
+    - name: "Enabling write access to containers"
+      command: "chcon -Rt svirt_sandbox_file_t {{ playbook_dir }}/configs/broker-edge"
+
+    - include_tasks: tasks/deploy_docker_brokers_edg.yml
+

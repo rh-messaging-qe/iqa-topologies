@@ -1,0 +1,43 @@
+---
+- name: Wait 10 seconds before creating broker
+  pause:
+    seconds: 10
+
+- name: Start Broker Edge 3 Master
+  docker_container:
+    name: Broker.M.E3
+    image: "{{ image_broker }}"
+    recreate: yes
+    state: started
+    published_ports: 8161:8161
+    networks:
+      - name: lab0
+        ipv4_address: 192.168.8.30
+        aliases:
+          - brokere3m
+        links:
+          - E3
+    volumes:
+      - "{{playbook_dir}}/configs/broker-edge/master:/opt/broker1/etc"
+
+- name: Start Broker Edge 3 Slave
+  docker_container:
+    name: Broker.S.E3
+    image: "{{ image_broker }}"
+    recreate: yes
+    state: started
+    published_ports: 8162:8162
+    networks:
+      - name: lab0
+        ipv4_address: 192.168.8.40
+        aliases:
+          - brokere3s
+        links:
+          - E3
+          - brokere3m
+    volumes:
+      - "{{playbook_dir}}/configs/broker-edge/slave:/opt/broker1/etc"
+
+- name: Wait 30 seconds till Master and Slave handshake is complete
+  pause:
+    seconds: 30
