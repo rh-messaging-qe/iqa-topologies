@@ -1,103 +1,103 @@
-####- hosts: routers
-####  tasks:
-####    # Create config directory
-####    - name: "Creating router configuration directory"
-####      file:
-####        path: /var/lib/qdrouterd
-####        state: directory
-####        mode: 0755
-####
-####- hosts: Router.I1
-####  tasks:
-####    # Copy Interior Configuration files
-####    - name: "Router.I1 - Copying router configuration files"
-####      copy:
-####        src: "{{ item }}"
-####        dest: /var/lib/qdrouterd
-####      with_fileglob:
-####        - "{{ playbook_dir }}/configs/Router.I1/*"
-####        
-####- hosts: Router.I2
-####  tasks:
-####    # Copy Interior Configuration files
-####    - name: "Router.I2 - Copying router configuration files"
-####      copy:
-####        src: "{{ item }}"
-####        dest: /var/lib/qdrouterd
-####      with_fileglob:
-####        - "{{ playbook_dir }}/configs/Router.I2/*"
-####        
-####- hosts: Router.I3
-####  tasks:
-####    # Copy Interior Configuration files
-####    - name: "Router.I3 - Copying router configuration files"
-####      copy:
-####        src: "{{ item }}"
-####        dest: /var/lib/qdrouterd
-####      with_fileglob:
-####        - "{{ playbook_dir }}/configs/Router.I3/*"
-####        
-####- hosts: Router.E1
-####  tasks:
-####    # Copy Edge Configuration files
-####    - name: "Router.E1 - Copying router configuration files"
-####      copy:
-####        src: "{{ item }}"
-####        dest: /var/lib/qdrouterd
-####      with_fileglob:
-####        - "{{ playbook_dir }}/configs/Router.E1/*"
-####        
-####- hosts: Router.E2
-####  tasks:
-####    # Copy Edge Configuration files
-####    - name: "Router.E2 - Copying router configuration files"
-####      copy:
-####        src: "{{ item }}"
-####        dest: /var/lib/qdrouterd
-####      with_fileglob:
-####        - "{{ playbook_dir }}/configs/Router.E2/*"
-####        
-####- hosts: Router.E3
-####  tasks:
-####    # Copy Edge Configuration files
-####    - name: "Router.E3 - Copying router configuration files"
-####      copy:
-####        src: "{{ item }}"
-####        dest: /var/lib/qdrouterd
-####      with_fileglob:
-####        - "{{ playbook_dir }}/configs/Router.E3/*"
-####        
-####- hosts: routers
-####  tasks:
-####    # Populating /etc/hosts across all routers
-####    - name: Add IP address of all hosts to all hosts
-####      lineinfile:
-####        dest: /etc/hosts
-####        regexp: '.*{{ item }}$'
-####        line: "{{ hostvars[item].ansible_host }} {{item}}"
-####        state: present
-####      when: hostvars[item].ansible_host is defined
-####      with_items: "{{ groups.all }}"
-####
-####    - name: Allow access to TCP ports
-####      shell: "iptables -I INPUT -p tcp --dport {{ item }} -j ACCEPT"
-####      with_items:
-####        - "2375"
-####        - "5656:5678"
-####        - "8161:8162"
-####        - "61616"
-####
-####- hosts: routers
-####  roles:
-####    - role: ansible-service-creator
-####      service_opts:
-####        qdrouterdcustom:
-####          Enabled: Yes
-####          Started: Yes
-####          ExecStart: "/usr/sbin/qdrouterd -c /var/lib/qdrouterd/qdrouterd.conf"
-####          User: "qdrouterd"
-####          Group: "qdrouterd"
-####          State: "started"
+- hosts: routers
+  tasks:
+    # Create config directory
+    - name: "Creating router configuration directory"
+      file:
+        path: /var/lib/qdrouterd
+        state: directory
+        mode: 0755
+
+- hosts: Router.I1
+  tasks:
+    # Copy Interior Configuration files
+    - name: "Router.I1 - Copying router configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: /var/lib/qdrouterd
+      with_fileglob:
+        - "{{ playbook_dir }}/configs/Router.I1/*"
+        
+- hosts: Router.I2
+  tasks:
+    # Copy Interior Configuration files
+    - name: "Router.I2 - Copying router configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: /var/lib/qdrouterd
+      with_fileglob:
+        - "{{ playbook_dir }}/configs/Router.I2/*"
+        
+- hosts: Router.I3
+  tasks:
+    # Copy Interior Configuration files
+    - name: "Router.I3 - Copying router configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: /var/lib/qdrouterd
+      with_fileglob:
+        - "{{ playbook_dir }}/configs/Router.I3/*"
+        
+- hosts: Router.E1
+  tasks:
+    # Copy Edge Configuration files
+    - name: "Router.E1 - Copying router configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: /var/lib/qdrouterd
+      with_fileglob:
+        - "{{ playbook_dir }}/configs/Router.E1/*"
+        
+- hosts: Router.E2
+  tasks:
+    # Copy Edge Configuration files
+    - name: "Router.E2 - Copying router configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: /var/lib/qdrouterd
+      with_fileglob:
+        - "{{ playbook_dir }}/configs/Router.E2/*"
+        
+- hosts: Router.E3
+  tasks:
+    # Copy Edge Configuration files
+    - name: "Router.E3 - Copying router configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: /var/lib/qdrouterd
+      with_fileglob:
+        - "{{ playbook_dir }}/configs/Router.E3/*"
+        
+- hosts: routers
+  tasks:
+    # Populating /etc/hosts across all routers
+    - name: Add IP address of all hosts to all hosts
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item].ansible_host }} {{item}}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+
+    - name: Allow access to TCP ports
+      shell: "iptables -I INPUT -p tcp --dport {{ item }} -j ACCEPT"
+      with_items:
+        - "2375"
+        - "5656:5678"
+        - "8161:8162"
+        - "61616"
+
+- hosts: routers
+  roles:
+    - role: ansible-service-creator
+      service_opts:
+        qdrouterdcustom:
+          Enabled: Yes
+          Started: Yes
+          ExecStart: "/usr/sbin/qdrouterd -c /var/lib/qdrouterd/qdrouterd.conf"
+          User: "qdrouterd"
+          Group: "qdrouterd"
+          State: "restarted"
 
 - hosts: Router.I2
   tasks:
@@ -107,12 +107,6 @@
         force: yes
         ipam_options:
           subnet: '192.168.8.0/24'
-
-####    - name: Redirecting TCP port 8161 to Broker.M.I2 Container IP
-####      shell: "iptables -t nat -I PREROUTING -p tcp -d {{ lookup('env', 'Router.I2') }} --dport 8161 -j DNAT --to 192.168.8.10"
-####
-####    - name: Redirecting TCP port 8162 to Broker.S.I2 Container IP
-####      shell: "iptables -t nat -I PREROUTING -p tcp -d {{ lookup('env', 'Router.I2') }} --dport 8162 -j DNAT --to 192.168.8.20"
 
     # Create config directory
     - name: "Creating broker configuration directory"
@@ -141,6 +135,17 @@
 
     - name: "Enabling write access to containers"
       command: "chcon -Rt svirt_sandbox_file_t {{ playbook_dir }}/configs/broker-interior"
+
+    # Adding interior brokers to /etc/hosts
+    - name: Add IP address of interior brokers to Router.I2
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^{{ item }}$'
+        line: "{{item}}"
+        state: present
+      with_items:
+        - "192.168.8.10 Broker.M.I2 brokeri2m"
+        - "192.168.8.20 Broker.S.I2 brokeri2s"
 
     - include_tasks: tasks/deploy_docker_brokers_int.yml
 
@@ -180,6 +185,17 @@
 
     - name: "Enabling write access to containers"
       command: "chcon -Rt svirt_sandbox_file_t {{ playbook_dir }}/configs/broker-edge"
+
+    # Adding edge brokers to /etc/hosts
+    - name: Add IP address of edge brokers to Router.E3
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^{{ item }}$'
+        line: "{{item}}"
+        state: present
+      with_items:
+        - "192.168.8.30 Broker.M.E3 brokere3m"
+        - "192.168.8.40 Broker.S.E3 brokere3s"
 
     - include_tasks: tasks/deploy_docker_brokers_edg.yml
 
