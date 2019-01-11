@@ -1,0 +1,9 @@
+- hosts: Router.I3
+  tasks:
+    - name: "Adding delay to Router.I3"
+      command: tc qdisc add dev eth0 root netem delay 100ms
+
+- hosts: Router.E3
+  tasks:
+    - name: "Adding delay to Router.E3"
+      command: tc qdisc add dev eth0 root netem delay 100ms

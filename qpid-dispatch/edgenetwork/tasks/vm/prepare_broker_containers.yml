@@ -1,0 +1,99 @@
+- hosts: Router.I2
+  tasks:
+    - name: Create lab0 network
+      docker_network:
+        name: lab0
+        force: yes
+        ipam_options:
+          subnet: '192.168.8.0/24'
+
+    # Create config directory
+    - name: "Creating broker configuration directory"
+      file:
+        path: "{{ inventory_dir }}/files/configs/broker-interior/{{ item }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - master
+        - slave
+
+    # Copy Broker Interior Configuration files
+    - name: "Router.I2 - Copying master broker configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: "{{ inventory_dir }}/files/configs/broker-interior/master"
+      with_fileglob:
+        - "{{ inventory_dir }}/files/configs/broker-interior/master/*"
+
+    - name: "Router.I2 - Copying slave broker configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: "{{ inventory_dir }}/files/configs/broker-interior/slave"
+      with_fileglob:
+        - "{{ inventory_dir }}/files/configs/broker-interior/slave/*"
+
+    - name: "Enabling write access to containers"
+      command: "chcon -Rt svirt_sandbox_file_t {{ inventory_dir }}/files/configs/broker-interior"
+
+    # Adding interior brokers to /etc/hosts
+    - name: Add IP address of interior brokers to Router.I2
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^{{ item }}$'
+        line: "{{item}}"
+        state: present
+      with_items:
+        - "192.168.8.10 Broker.M.I2 brokeri2m"
+        - "192.168.8.20 Broker.S.I2 brokeri2s"
+
+    - include_tasks: ../common/deploy_docker_brokers_int.yml
+
+- hosts: Router.E3
+  tasks:
+    - name: Create lab0 network
+      docker_network:
+        name: lab0
+        force: yes
+        ipam_options:
+          subnet: '192.168.8.0/24'
+
+    # Create config directory
+    - name: "Creating broker configuration directory"
+      file:
+        path: "{{ inventory_dir }}/files/configs/broker-edge/{{ item }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - master
+        - slave
+
+    # Copy Broker Edge Configuration files
+    - name: "Router.E3 - Copying master broker configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: "{{ inventory_dir }}/files/configs/broker-edge/master"
+      with_fileglob:
+        - "{{ inventory_dir }}/files/configs/broker-edge/master/*"
+
+    - name: "Router.E3 - Copying slave broker configuration files"
+      copy:
+        src: "{{ item }}"
+        dest: "{{ inventory_dir }}/files/configs/broker-edge/slave"
+      with_fileglob:
+        - "{{ inventory_dir }}/files/configs/broker-edge/slave/*"
+
+    - name: "Enabling write access to containers"
+      command: "chcon -Rt svirt_sandbox_file_t {{ inventory_dir }}/files/configs/broker-edge"
+
+    # Adding edge brokers to /etc/hosts
+    - name: Add IP address of edge brokers to Router.E3
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^{{ item }}$'
+        line: "{{item}}"
+        state: present
+      with_items:
+        - "192.168.8.30 Broker.M.E3 brokere3m"
+        - "192.168.8.40 Broker.S.E3 brokere3s"
+
+    - include_tasks: ../common/deploy_docker_brokers_edg.yml

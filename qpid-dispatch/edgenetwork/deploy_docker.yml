@@ -1,0 +1,40 @@
+---
+# Undeploy previus topology if exist
+- import_playbook: "{{ playbook_dir }}/tasks/docker/undeploy_docker.yml"
+
+- hosts: docker-host
+  tasks:
+    - set_fact: inventory_dir="{{ playbook_dir }}"
+
+    - name: Create lab0 network
+      docker_network:
+        name: lab0
+        force: yes
+        ipam_options:
+          subnet: '192.168.8.0/24'
+
+    # Copying configuration files to docker-host when using a remote one
+    - include_tasks: "{{ inventory_dir }}/tasks/docker/copy_config_docker_host.yml"
+      when: docker_host != 'localhost'
+
+    # Broker deployment
+    - include_tasks: "{{ inventory_dir }}/tasks/common/deploy_docker_brokers_int.yml"
+    - include_tasks: "{{ inventory_dir }}/tasks/common/deploy_docker_brokers_edg.yml"
+
+    # Router deployment
+    - include_tasks: "{{ inventory_dir }}/tasks/docker/deploy_docker_routers_int.yml"
+    - include_tasks: "{{ inventory_dir }}/tasks/docker/deploy_docker_routers_edg.yml"
+
+    # Client deployment
+    - include_tasks: "{{ inventory_dir }}/tasks/common/deploy_docker_clients.yml"
+    - include_tasks: "{{ inventory_dir }}/tasks/common/client_data.yml"
+
+    # Delay specifics containers
+    - include_tasks: "{{ inventory_dir }}/tasks/docker/delay_container.yml"
+      vars:
+        delay_victim: Router.E3
+        delay_time: 100ms
+    - include_tasks: "{{ inventory_dir }}/tasks/docker/delay_container.yml"
+      vars:
+        delay_victim: Router.I3
+        delay_time: 100ms

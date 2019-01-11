@@ -1,0 +1,11 @@
+- hosts: routers
+  tasks:
+    - name: Allow access to TCP ports
+      shell: "iptables -I INPUT -p tcp --dport {{ item }} -j ACCEPT"
+      with_items:
+        - "2375"
+        - "5656:5678"
+        - "6001:6003"
+        - "7001:7003"
+      - "8161:8162"
+        - "61616"

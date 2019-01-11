@@ -1,0 +1,13 @@
+- hosts: all
+  tasks:
+    - set_fact: inventory_dir="{{ playbook_dir }}"
+    
+- import_playbook: "{{ inventory_dir }}/tasks/vm/populate_etc_hosts.yml"
+- import_playbook: "{{ inventory_dir }}/tasks/vm/copy_config_routers.yml"
+- import_playbook: "{{ roinventory_dirle_path }}/tasks/vm/prepare_broker_containers.yml"
+- import_playbook: "{{ inventory_dir }}/tasks/vm/create_services.yml"
+- hosts: docker-host
+  tasks:
+    - include_tasks: "{{ inventory_dir }}/tasks/common/deploy_docker_clients.yml"
+    - include_tasks: "{{ inventory_dir }}/tasks/common/client_data.yml"
+- import_playbook: "{{ inventory_dir }}/tasks/vm/delay_vms.yml"

@@ -1,0 +1,45 @@
+---
+  - name: Create directory for large messages
+    file:
+      path: "{{ inventory_dir }}/files/clients-data/msgs"
+      state: directory
+
+  - name: Generate 1KiB large message
+    include_tasks: "{{ inventory_dir }}/tasks/common/create_file.yml"
+    vars:
+      size: "{{ 2**10 }}"
+      name: "msg_1kib.txt"
+      path: "{{ inventory_dir }}/files/clients-data/msgs"
+
+  - name: Generate 10KiB large message
+    include_tasks: "{{ inventory_dir }}/tasks/common/create_file.yml"
+    vars:
+      size: "{{ 2**10*10 }}"
+      name: "msg_10kib.txt"
+      path: "{{ inventory_dir }}/files/clients-data/msgs"
+
+  - name: Generate 1MiB large message
+    include_tasks: "{{ inventory_dir }}/tasks/common/create_file.yml"
+    vars:
+      size: "{{ 2**20 }}"
+      name: "msg_1mib.txt"
+      path: "{{ inventory_dir }}/files/clients-data/msgs"
+
+  - name: Generate 10MiB large message
+    include_tasks: "{{ inventory_dir }}/tasks/common/create_file.yml"
+    vars:
+      size: "{{ 2**20*10 }}"
+      name: "msg_10mib.txt"
+      path: "{{ inventory_dir }}/files/clients-data/msgs"
+
+  - name: Generate 100MiB large message
+    include_tasks: "{{ inventory_dir }}/tasks/common/create_file.yml"
+    vars:
+      size: "{{ 2**20*100 }}"
+      name: "msg_100mib.txt"
+      path: "{{ inventory_dir }}/files/clients-data/msgs"
+
+  - name: Generate checksum
+    shell: "sha1sum msg_* > msgs.sha1sum"
+    args:
+      chdir: "{{ inventory_dir }}/files/clients-data/msgs/"
