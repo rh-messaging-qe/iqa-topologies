@@ -1,5 +1,5 @@
 -e docker_host <host>
-  When not deploying to localhost
+  When not deploying containers to localhost
 
 If running router components through VMs, then the following environment
 variables must be exported:

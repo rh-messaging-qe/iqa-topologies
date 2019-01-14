@@ -1,0 +1,10 @@
+- name: Undeploy containers
+  docker_container:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - Broker.M.I2
+    - Broker.S.I2
+    - Broker.M.E3
+    - Broker.S.E3
+  ignore_errors: true

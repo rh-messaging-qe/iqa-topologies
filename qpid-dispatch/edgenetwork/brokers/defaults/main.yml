@@ -1,0 +1,4 @@
+---
+# defaults file for brokers
+deploy_interior: True
+deploy_edge: True
