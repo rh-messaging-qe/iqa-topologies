@@ -1,0 +1,4 @@
+---
+# defaults file for routers
+deploy_to_containers: True
+router_image: 'rhmessagingqe/qpid-dispatch:ubuntu1804'

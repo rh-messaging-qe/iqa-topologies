@@ -1,0 +1,12 @@
+- name: Undeploy containers
+  docker_container:
+    name: "{{ item }}"
+    state: absent
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{ groups.all }}"
+  ignore_errors: true
+
+- name: Remove lab0 network
+  docker_network:
+    name: lab0
+    state: absent

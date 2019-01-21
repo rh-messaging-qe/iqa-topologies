@@ -1,0 +1,92 @@
+#
+# Prepare docker network and etc hosts file on Router.I2 and Router.E3
+#
+
+#
+# Ensures that all environment variables are set so each router can be deployed
+# to its appropriate SSH host
+#
+- hosts: localhost
+  tasks:
+    - name: Assert environment variables are set for each router host
+      assert:
+        that: lookup('env', item) != ''
+        msg: "{{ item }} environment variable must be set"
+      with_items: [Router_I1, Router_I2, Router_I3, Router_E1, Router_E2, Router_E3]
+
+#
+# Preparing docker network that will be used on Router.I2 and Router.E3 to
+# communicate with the broker instances
+#
+- hosts: Router.I2,Router.E3
+  tasks:
+    - name: Create lab0 network
+      docker_network:
+        name: lab0
+        force: yes
+        ipam_options:
+          subnet: '192.168.8.0/24'
+
+    # Adding interior brokers to /etc/hosts
+    - name: Add IP address of interior brokers to router nodes
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^{{ item }}$'
+        line: "{{item}}"
+        state: present
+      with_items:
+        - "192.168.8.10 Broker.M.I2 brokeri2m"
+        - "192.168.8.20 Broker.S.I2 brokeri2s"
+        - "192.168.8.30 Broker.M.E3 brokere3m"
+        - "192.168.8.40 Broker.S.E3 brokere3s"
+
+#
+# Deploying Broker containers into their related router hosts
+#
+- hosts: Router.I2
+  roles:
+    - role: brokers
+      vars:
+        deploy_interior: True
+        deploy_edge: False
+
+- hosts: Router.E3
+  roles:
+    - role: brokers
+      vars:
+        deploy_interior: False
+        deploy_edge: True
+
+- hosts: routers
+  roles:
+    - role: routers
+      vars:
+        deploy_to_containers: False
+
+#
+# Deploying the router nodes
+#
+
+# - hosts: all[0]
+#   connection: local
+#
+# - import_playbook: "{{ inventory_dir }}/tasks/vm/populate_etc_hosts.yml"
+# - import_playbook: "{{ inventory_dir }}/tasks/vm/copy_config_routers.yml"
+# - import_playbook: "{{ inventory_dir }}/tasks/vm/create_services.yml"
+# - import_playbook: "{{ inventory_dir }}/tasks/vm/delay_vms.yml"
+
+#
+# Deploying the client containers into the docker-host
+#
+- hosts: docker-host
+  tasks:
+    - name: Create lab0 network
+      docker_network:
+        name: lab0
+        force: yes
+        ipam_options:
+          subnet: '192.168.8.0/24'
+
+- hosts: docker-host
+  roles:
+    - role: clients

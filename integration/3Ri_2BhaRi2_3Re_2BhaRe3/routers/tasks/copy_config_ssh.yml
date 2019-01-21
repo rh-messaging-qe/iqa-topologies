@@ -1,0 +1,13 @@
+---
+
+# Create config directory
+- name: "Creating router configuration directory"
+  file:
+    path: /var/lib/qdrouterd
+    state: directory
+    mode: 0755
+
+- name: "Copying router configuration files"
+  synchronize:
+    src: "{{ role_path }}/files/{{ inventory_hostname }}/"
+    dest: "/var/lib/qdrouterd"

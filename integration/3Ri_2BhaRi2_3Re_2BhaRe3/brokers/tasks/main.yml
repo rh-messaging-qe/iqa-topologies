@@ -1,0 +1,24 @@
+---
+# tasks file for brokers
+
+#
+# Undeploy existing broker containers
+#
+- include: undeploy_docker.yml
+
+#
+# Copy broker configuration files to remote host
+# Only when not running containers locally
+#
+- include: copy_config_docker_host_int.yml
+  when: lookup('env', 'docker_host') != 'localhost' and deploy_interior == True
+- include: copy_config_docker_host_edg.yml
+  when: lookup('env', 'docker_host') != 'localhost' and deploy_edge == True
+
+#
+# Deploying broker containers
+#
+- include: deploy_docker_brokers_int.yml
+  when: deploy_interior == True
+- include: deploy_docker_brokers_edg.yml
+  when: deploy_edge == True
