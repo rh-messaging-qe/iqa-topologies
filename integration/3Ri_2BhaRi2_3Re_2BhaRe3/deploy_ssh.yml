@@ -64,18 +64,6 @@
         deploy_to_containers: False
 
 #
-# Deploying the router nodes
-#
-
-# - hosts: all[0]
-#   connection: local
-#
-# - import_playbook: "{{ inventory_dir }}/tasks/vm/populate_etc_hosts.yml"
-# - import_playbook: "{{ inventory_dir }}/tasks/vm/copy_config_routers.yml"
-# - import_playbook: "{{ inventory_dir }}/tasks/vm/create_services.yml"
-# - import_playbook: "{{ inventory_dir }}/tasks/vm/delay_vms.yml"
-
-#
 # Deploying the client containers into the docker-host
 #
 - hosts: docker-host
