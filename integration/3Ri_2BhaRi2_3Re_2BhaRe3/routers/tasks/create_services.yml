@@ -1,0 +1,14 @@
+---
+# Creates the qdrouterdcustom service
+- name: "Creating service for qdrouterd"
+  include_role:
+    name: ansible-service-creator
+  vars:
+    service_opts:
+      qdrouterdcustom:
+        Enabled: Yes
+        Started: Yes
+        ExecStart: "/usr/sbin/qdrouterd -c /var/lib/qdrouterd/qdrouterd.conf"
+        User: "qdrouterd"
+        Group: "qdrouterd"
+        State: "restarted"
