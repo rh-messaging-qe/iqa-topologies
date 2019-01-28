@@ -1,0 +1,25 @@
+- name: Allow access to TCP ports with iptables
+  shell: "iptables -I INPUT -p tcp --dport {{ item }} -j ACCEPT"
+  with_items:
+    - "2375"
+    - "5656:5678"
+    - "6001:6003"
+    - "7001:7003"
+    - "8161:8162"
+    - "61616"
+  when: ansible_distribution_major_version|int < 8
+
+- name: Allow access to TCP ports with firewalld
+  firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+    immediate: yes
+  when: ansible_distribution_major_version|int >= 8
+  with_items:
+    - "2375"
+    - "5656-5678"
+    - "6001-6003"
+    - "7001-7003"
+    - "8161-8162"
+    - "61616"
