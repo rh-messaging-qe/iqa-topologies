@@ -1,0 +1,55 @@
+---
+# tasks file for routers
+
+#
+# Preparing /etc/hosts across all router nodes
+#
+- include: populate_etc_hosts.yml
+  when: deploy_to_containers == False
+
+#
+# Copy configuration files to remote host (when not running local containers)
+#
+- include: copy_config_docker_host.yml
+  when: deploy_to_containers and lookup('env', 'docker_host') != 'localhost'
+- include: copy_config_ssh.yml
+  when: deploy_to_containers == False
+
+#
+# Allow TCP packets through firewall
+#
+- include: open_firewall.yml
+
+#
+# Creating system services (when not running in containers)
+#
+- include: create_services.yml
+  when: deploy_to_containers == False
+
+#
+# Deploys and start router containers
+#
+- include: deploy_docker_routers_int.yml
+  when: deploy_to_containers
+- include: deploy_docker_routers_edg.yml
+  when: deploy_to_containers
+
+#
+# Delaying containers
+#
+- include: delay_container.yml
+    delay_victim='Router.I3'
+    delay_time='100ms'
+  when: deploy_to_containers
+
+- include: delay_container.yml
+    delay_victim='Router.E3'
+    delay_time='100ms'
+  when: deploy_to_containers
+
+#
+# Delaying on remote machines
+#
+- include: delay_vm.yml
+    delay_time='100ms'
+  when: deploy_to_containers == False and inventory_hostname in ('Router.I3', 'Router.E3')

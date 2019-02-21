@@ -1,0 +1,4 @@
+---
+# tasks file for clients
+- include: generate_messages.yml
+- include: deploy_docker_clients.yml

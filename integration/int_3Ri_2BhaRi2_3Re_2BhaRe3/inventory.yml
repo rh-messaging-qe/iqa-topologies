@@ -1,0 +1,123 @@
+all:
+    vars:
+        ansible_user: root
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        executor_docker_network: lab0
+        image_broker: rhmessagingqe/artemis:fedora27
+        image_router: rhmessagingqe/qpid-dispatch:ubuntu1804
+        docker_host: "{{ lookup('env', 'docker_host') or 'localhost' }}"
+    hosts:
+        docker-host:
+            ansible_host: "{{ docker_host }}"
+    children:
+        routers:
+            children:
+                router-internal:
+                    hosts:
+                        Router.I1:
+                            ansible_host: "{{ lookup('env', 'Router_I1') or docker_host }}"
+                            ansible_connection: "{{ 'ssh' if lookup('env', 'Router_I1') else 'docker' }}"
+                            ansible_docker_extra_args: "{{ '-H tcp://' + (lookup('env', 'Router_I1') or docker_host) + ':2375' }}"
+                            executor: "{{ 'ansible' if lookup('env', 'Router_I1') else 'docker' }}"
+                            executor_docker_host: "{{ 'tcp://' + (lookup('env', 'Router_I1') or docker_host) + ':2375' }}"
+                            service: "{{ 'qdrouterdcustom' if lookup('env', 'Router_I1') else '' }}"
+                            router_port: 6001
+                        Router.I2:
+                            ansible_host: "{{ lookup('env', 'Router_I2') or docker_host }}"
+                            ansible_connection: "{{ 'ssh' if lookup('env', 'Router_I2') else 'docker' }}"
+                            ansible_docker_extra_args: "{{ '-H tcp://' + (lookup('env', 'Router_I2') or docker_host) + ':2375' }}"
+                            executor: "{{ 'ansible' if lookup('env', 'Router_I2') else 'docker' }}"
+                            executor_docker_host: "{{ 'tcp://' + (lookup('env', 'Router_I2') or docker_host) + ':2375' }}"
+                            service: "{{ 'qdrouterdcustom' if lookup('env', 'Router_I2') else '' }}"
+                            router_port: 6002
+                        Router.I3:
+                            ansible_host: "{{ lookup('env', 'Router_I3') or docker_host }}"
+                            ansible_connection: "{{ 'ssh' if lookup('env', 'Router_I3') else 'docker' }}"
+                            ansible_docker_extra_args: "{{ '-H tcp://' + (lookup('env', 'Router_I3') or docker_host) + ':2375' }}"
+                            executor: "{{ 'ansible' if lookup('env', 'Router_I3') else 'docker' }}"
+                            executor_docker_host: "{{ 'tcp://' + (lookup('env', 'Router_I3') or docker_host) + ':2375' }}"
+                            service: "{{ 'qdrouterdcustom' if lookup('env', 'Router_I3') else '' }}"
+                            router_port: 6003
+                router-edge:
+                    hosts:
+                        Router.E1:
+                            ansible_host: "{{ lookup('env', 'Router_E1') or docker_host }}"
+                            ansible_connection: "{{ 'ssh' if lookup('env', 'Router_E1') else 'docker' }}"
+                            ansible_docker_extra_args: "{{ '-H tcp://' + (lookup('env', 'Router_E1') or docker_host) + ':2375' }}"
+                            executor: "{{ 'ansible' if lookup('env', 'Router_E1') else 'docker' }}"
+                            executor_docker_host: "{{ 'tcp://' + (lookup('env', 'Router_E1') or docker_host) + ':2375' }}"
+                            service: "{{ 'qdrouterdcustom' if lookup('env', 'Router_E1') else '' }}"
+                            router_port: 7001
+                        Router.E2:
+                            ansible_host: "{{ lookup('env', 'Router_E2') or docker_host }}"
+                            ansible_connection: "{{ 'ssh' if lookup('env', 'Router_E2') else 'docker' }}"
+                            ansible_docker_extra_args: "{{ '-H tcp://' + (lookup('env', 'Router_E2') or docker_host) + ':2375' }}"
+                            executor: "{{ 'ansible' if lookup('env', 'Router_E2') else 'docker' }}"
+                            executor_docker_host: "{{ 'tcp://' + (lookup('env', 'Router_E2') or docker_host) + ':2375' }}"
+                            service: "{{ 'qdrouterdcustom' if lookup('env', 'Router_E2') else '' }}"
+                            router_port: 7002
+                        Router.E3:
+                            ansible_host: "{{ lookup('env', 'Router_E3') or docker_host }}"
+                            ansible_connection: "{{ 'ssh' if lookup('env', 'Router_E3') else 'docker' }}"
+                            ansible_docker_extra_args: "{{ '-H tcp://' + (lookup('env', 'Router_E3') or docker_host) + ':2375' }}"
+                            executor: "{{ 'ansible' if lookup('env', 'Router_E3') else 'docker' }}"
+                            executor_docker_host: "{{ 'tcp://' + (lookup('env', 'Router_E3') or docker_host) + ':2375' }}"
+                            service: "{{ 'qdrouterdcustom' if lookup('env', 'Router_E3') else '' }}"
+                            router_port: 7003
+            vars:
+                component: router
+                implementation: dispatch
+                router_config: /var/lib/qdrouterd/qdrouterd.conf
+        brokers:
+            children:
+                broker-master:
+                    hosts:
+                        Broker.M.E3:
+                            broker_name: amqmastere
+                            ansible_host: "{{ lookup('env', 'Router_E3') or docker_host }}"
+                            ansible_docker_extra_args: "{{ '-H tcp://' + (lookup('env', 'Router_E3') or docker_host) + ':2375' }}"
+                            executor_docker_host: "{{ 'tcp://' + (lookup('env', 'Router_E3') or docker_host) + ':2375' }}"
+                            broker_web_port: 8163
+                        Broker.M.I2:
+                            ansible_host: "{{ lookup('env', 'Router_I2') or docker_host }}"
+                            broker_name: amqmasteri
+                            ansible_docker_extra_args: "{{ '-H tcp://' + (lookup('env', 'Router_I2') or docker_host) + ':2375' }}"
+                            executor_docker_host: "{{ 'tcp://' + (lookup('env', 'Router_I2') or docker_host) + ':2375' }}"
+                            broker_web_port: 8161
+                broker-slave:
+                    hosts:
+                        Broker.S.E3:
+                            broker_name: amqslavee
+                            ansible_host: "{{ lookup('env', 'Router_E3') or docker_host }}"
+                            ansible_docker_extra_args: "{{ '-H tcp://' + (lookup('env', 'Router_E3') or docker_host) + ':2375' }}"
+                            executor_docker_host: "{{ 'tcp://' + (lookup('env', 'Router_E3') or docker_host) + ':2375' }}"
+                            broker_web_port: 8164
+                        Broker.S.I2:
+                            ansible_host: "{{ lookup('env', 'Router_I2') or docker_host }}"
+                            broker_name: amqslavei
+                            ansible_docker_extra_args: "{{ '-H tcp://' + (lookup('env', 'Router_I2') or docker_host) + ':2375' }}"
+                            executor_docker_host: "{{ 'tcp://' + (lookup('env', 'Router_I2') or docker_host) + ':2375' }}"
+                            broker_web_port: 8162
+            vars:
+                component: broker
+                implementation: artemis
+                broker_path: /opt/broker1
+                ansible_connection: docker
+                executor: docker
+        clients:
+            hosts:
+                cli-java:
+                    implementation: java
+                    ansible_user: cli-java
+                cli-proton-python:
+                    implementation: python
+                    ansible_user: cli-proton-python
+                cli-rhea:
+                    implementation: nodejs
+                    ansible_user: cli-rhea
+            vars:
+                component: client
+                executor: docker
+                ansible_connection: docker
+                ansible_docker_extra_args: "{{ '-H tcp://' + docker_host + ':2375' }}"
+                executor_docker_host: "{{ 'tcp://' + docker_host + ':2375' }}"

@@ -1,0 +1,31 @@
+- hosts: docker-host
+  tasks:
+    - name: Undeploy containers
+      docker_container:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - Broker.M.I2
+        - Broker.S.I2
+        - Broker.M.E3
+        - Broker.S.E3
+        - Router.I1
+        - Router.I2
+        - Router.I3
+        - Router.E1
+        - Router.E2
+        - Router.E3
+        - cli-java
+        - cli-proton-python
+        - cli-rhea
+      ignore_errors: true
+
+    - name: Remove clients-data
+      file:
+        state: absent
+        path: "{{ inventory_dir }}/files/clients-data"
+
+    - name: Remove lab0 network
+      docker_network:
+        name: lab0
+        state: absent

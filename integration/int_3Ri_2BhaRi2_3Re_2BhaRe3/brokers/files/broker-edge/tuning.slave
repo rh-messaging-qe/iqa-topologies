@@ -1,0 +1,16 @@
+# amqcfg tuning file generated from profile artemis/2.6.0/ha/replication.yaml
+broker_home: /opt/apache-artemis-2.6.3
+broker_instance: /opt/broker1
+broker_name: amqslavee
+cluster_connector_address: 192.168.8.40
+cluster_connector_url: tcp://0.0.0.0:61616
+cluster_load_balancing: ON_DEMAND
+cluster_multicast_address: 231.8.8.8
+cluster_multicast_port: 9876
+ha_allow_failback: true
+ha_check_for_live_server: true
+ha_group_name: edge-router-group
+ha_role: slave
+ha_slave_allow_failback: true
+ha_vote_on_replication_failure: false
+log_level_all: INFO

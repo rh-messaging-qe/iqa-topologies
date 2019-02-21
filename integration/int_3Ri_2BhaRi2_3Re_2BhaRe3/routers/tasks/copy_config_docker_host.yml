@@ -1,0 +1,28 @@
+---
+- name: "Creating configuration directories"
+  file:
+    path: "{{ role_path }}/files/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - Router.I1
+    - Router.I2
+    - Router.I3
+    - Router.E1
+    - Router.E2
+    - Router.E3
+
+- name: "Copying router configuration files"
+  synchronize:
+    src: "{{ role_path }}/files/{{ item }}/"
+    dest: "{{ role_path }}/files/{{ item }}"
+  with_items:
+    - Router.I1
+    - Router.I2
+    - Router.I3
+    - Router.E1
+    - Router.E2
+    - Router.E3
+
+- name: "Enabling write access to containers"
+  command: "chcon -Rt svirt_sandbox_file_t {{ role_path }}/files"
