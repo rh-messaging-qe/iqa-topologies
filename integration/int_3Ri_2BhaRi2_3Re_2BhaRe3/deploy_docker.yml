@@ -1,0 +1,35 @@
+---
+#
+# Ensures that environment is not prepared for deploying to VMs through SSH
+# as we are using a unique inventory file, setting up the environment variables
+# can cause problems or unexpected behavior
+#
+- hosts: localhost
+  tasks:
+    - name: Assert environment variables are not set for each router host
+      assert:
+        that: lookup('env', item) == ''
+        msg: "{{ item }} environment variable cannot be set"
+      with_items: [Router_I1, Router_I2, Router_I3, Router_E1, Router_E2, Router_E3]
+
+# Undeploy previus topology if exist
+- hosts: docker-host
+  tasks:
+    - name: Create lab0 network
+      docker_network:
+        name: lab0
+        force: yes
+        ipam_options:
+          subnet: '192.168.8.0/24'
+
+# Deploy the brokers
+- hosts: docker-host
+  roles:
+    - role: brokers
+      vars:
+        deploy_interior: True
+        deploy_edge: True
+    - role: routers
+      vars:
+        deploy_to_containers: True
+    - role: clients

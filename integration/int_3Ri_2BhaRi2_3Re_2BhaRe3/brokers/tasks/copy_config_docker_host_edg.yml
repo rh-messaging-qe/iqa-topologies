@@ -1,0 +1,22 @@
+---
+- name: "Creating configuration directories"
+  file:
+    path: "{{ role_path }}/files/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - broker-edge/master
+    - broker-edge/slave
+
+- name: "Copying Broker.M.E3 configuration files"
+  synchronize:
+    src: "{{ role_path }}/files/broker-edge/master/"
+    dest: "{{ role_path }}/files/broker-edge/master"
+
+- name: "Copying Broker.S.E3 configuration files"
+  synchronize:
+    src: "{{ role_path }}/files/broker-edge/slave/"
+    dest: "{{ role_path }}/files/broker-edge/slave"
+
+- name: "Enabling write access to containers"
+  command: "chcon -Rt svirt_sandbox_file_t {{ role_path }}/files"

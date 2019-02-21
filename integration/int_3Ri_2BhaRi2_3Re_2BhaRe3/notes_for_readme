@@ -1,0 +1,11 @@
+-e docker_host <host>
+  When not deploying containers to localhost
+
+If running router components through VMs, then the following environment
+variables must be exported:
+- Router_I1
+- Router_I2
+- Router_I3
+- Router_E1
+- Router_E2
+- Router_I3
