@@ -1,4 +1,4 @@
-# This configuration file artemis.profile.jinja2 has been generated at 2019-01-10 13:35 by amqcfg tool
+# This configuration file artemis.profile.jinja2 has been generated at 2019-03-14 11:15 by amqcfg tool
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -18,7 +18,7 @@
 # under the License.
 #
 
-ARTEMIS_HOME='/opt/apache-artemis-2.6.3'
+ARTEMIS_HOME='/opt/apache-artemis-2.6.4'
 ARTEMIS_INSTANCE='/opt/broker1'
 ARTEMIS_DATA_DIR='/opt/broker1/data'
 
