@@ -17,6 +17,3 @@
   synchronize:
     src: "{{ role_path }}/files/broker-edge/slave/"
     dest: "{{ role_path }}/files/broker-edge/slave"
-
-- name: "Enabling write access to containers"
-  command: "chcon -Rt svirt_sandbox_file_t {{ role_path }}/files"

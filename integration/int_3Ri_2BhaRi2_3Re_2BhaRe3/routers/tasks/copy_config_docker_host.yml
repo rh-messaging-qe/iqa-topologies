@@ -26,3 +26,4 @@
 
 - name: "Enabling write access to containers"
   command: "chcon -Rt svirt_sandbox_file_t {{ role_path }}/files"
+  when: ansible_selinux is defined and ansible_selinux != False and ansible_selinux.status == 'enabled'

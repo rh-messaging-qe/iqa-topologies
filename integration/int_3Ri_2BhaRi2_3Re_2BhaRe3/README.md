@@ -49,7 +49,7 @@ Listeners
 
 - 5672 open for managements
 - 5656 open for inter-router
-- 5678 open for edges (TLS Aut. requierd)
+- 5678 open for edges (TLS Aut. required)
 
 Connectors
 
@@ -82,7 +82,7 @@ Connectors
 Listeners
 
 - 5672 open for managements
-- 5677 open for clients (TLS Aut. requierd)
+- 5677 open for clients (TLS Aut. required)
 
 Connectors
 
@@ -93,5 +93,5 @@ Connectors
 Docker playbook:
 
 ```bash
-ansible-playbook -i docker_inventory.yml deploy_docker.yml
+ansible-playbook -i inventory.yml deploy_docker.yml
 ```
