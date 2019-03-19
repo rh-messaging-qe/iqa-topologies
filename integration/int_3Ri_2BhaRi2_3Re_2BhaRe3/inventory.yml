@@ -9,6 +9,7 @@ all:
     hosts:
         docker-host:
             ansible_host: "{{ docker_host }}"
+            ansible_connection: "{{ 'ssh' if lookup('env', 'docker_host') else 'local' }}"
     children:
         routers:
             children:
