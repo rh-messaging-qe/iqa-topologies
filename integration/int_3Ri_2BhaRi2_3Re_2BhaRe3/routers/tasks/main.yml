@@ -19,7 +19,7 @@
 # Allow TCP packets through firewall
 #
 - include: open_firewall.yml
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 #
 # Creating system services (when not running in containers)

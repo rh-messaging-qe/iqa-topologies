@@ -15,7 +15,8 @@
     permanent: yes
     state: enabled
     immediate: yes
-  when: ansible_distribution_major_version|int >= 8
+  when: ansible_distribution_major_version|int >= 7
+  ignore_errors: true
   with_items:
     - "2375"
     - "5656-5678"
