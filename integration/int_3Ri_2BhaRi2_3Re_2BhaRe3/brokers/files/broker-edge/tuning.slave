@@ -1,5 +1,5 @@
 # amqcfg tuning file generated from profile artemis/2.6.0/ha/replication.yaml
-broker_home: /opt/apache-artemis-2.6.4
+broker_home: /opt/apache-artemis-2.7.0
 broker_instance: /opt/broker1
 broker_name: amqslavee
 cluster_connector_address: 192.168.8.40
