@@ -9,6 +9,7 @@
     recreate: yes
     tty: yes
     detach: yes
+    pull: yes
   with_items:
     - name: cli-java
       image: rhmessagingqe/cli-java:latest
