@@ -1,3 +1,9 @@
+- name: "Remove directory that holds client certificates"
+  file:
+    path: tmp/client-certs
+    state: absent 
+  ignore_errors: true
+
 - name: "Creating directory to hold client certificates"
   file:
     path: tmp/client-certs
@@ -36,6 +42,12 @@
 
 - name: "Copying client KEY to client containers"
   shell: "docker cp tmp/client-certs/client-key.pem {{ item }}:."
+  with_items:
+    - cli-proton-python
+    - cli-rhea
+
+- name: "Adjusting client certificates permissions on containers"
+  shell: "docker exec -u root -i {{item}} chown {{item}} /client.crt /client-key.pem"
   with_items:
     - cli-proton-python
     - cli-rhea
