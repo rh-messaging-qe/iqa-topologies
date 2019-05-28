@@ -55,5 +55,10 @@
 - name: "Copying keystore to java client container"
   shell: "docker cp tmp/client-certs/clientkeystore cli-java:."
 
+- name: "Adjusting keystore permissions on container"
+  shell: "docker exec -u root -i {{item}} chown {{item}} /clientkeystore
+  with_items:
+    - cli-java
+
 - name: "Copying client certificates to iqa_testsuite"
   shell: "cp tmp/client-certs/client-key.pem tmp/client-certs/client.crt {{ lookup('env', 'PWD') }}"
