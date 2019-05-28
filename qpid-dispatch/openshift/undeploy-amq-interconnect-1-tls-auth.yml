@@ -6,5 +6,7 @@
   vars:
     openshift_template_name: "amq-interconnect-1-tls-auth"
     role_action: "delete"
+    inter_router_certs: true
+    client_ca: true
   roles:
     - ansible-interconnect-image
