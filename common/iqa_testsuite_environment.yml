@@ -10,9 +10,13 @@
     name: "{{ iqa_testsuite }}/requirements.txt"
     state: file
 
+- name: "Validate if venv already exists"
+  stat: path={{venv_dir}}
+  register: venv
+
 - name: "Creating a virtual environment for the iqa_testsuite"
   command: "virtualenv -p {{ venv_cmd }} {{ venv_dir }}"
+  when: not venv.stat.exists
 
 - name: "Installing iqa_testsuite requirements"
   command: "{{ venv_dir }}/bin/python -m pip install -r {{ iqa_testsuite }}/requirements.txt"
-
