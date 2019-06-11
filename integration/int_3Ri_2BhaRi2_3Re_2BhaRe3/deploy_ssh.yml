@@ -20,6 +20,10 @@
 #
 - hosts: Router.I2,Router.E3
   tasks:
+    - name: Installing pip modules
+      command: python -m pip install docker
+      ignore_errors: yes
+
     - name: Create lab0 network
       docker_network:
         name: lab0
