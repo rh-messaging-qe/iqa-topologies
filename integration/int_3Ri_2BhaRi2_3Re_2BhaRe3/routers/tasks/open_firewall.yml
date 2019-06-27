@@ -9,12 +9,9 @@
     - "61616"
   when: ansible_distribution_major_version|int < 8
 
-- name: Allow access to TCP ports with firewalld
-  firewalld:
-    port: "{{ item }}/tcp"
-    permanent: yes
-    state: enabled
-    immediate: yes
+# Could not use firewalld module with python3 (missing python3-firewall package)
+- name: Allow access to TCP ports with firewalld-cmd
+  command: "firewall-cmd --zone=public --add-port={{ item }}/tcp --permanent"
   when: ansible_distribution_major_version|int >= 7
   ignore_errors: true
   with_items:
@@ -24,3 +21,9 @@
     - "7001-7003"
     - "8161-8162"
     - "61616"
+
+- name: Reloading firewalld rules
+  command: "firewall-cmd --reload"
+  when: ansible_distribution_major_version|int >= 7
+  ignore_errors: true
+
