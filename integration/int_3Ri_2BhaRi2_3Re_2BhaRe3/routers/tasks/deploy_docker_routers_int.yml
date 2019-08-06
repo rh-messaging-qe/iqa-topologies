@@ -19,7 +19,7 @@
           - I2
           - E1
     volumes:
-      - "{{ role_path }}/files/Router.I1:/var/lib/qdrouterd"
+      - "{{ role_path }}/files/Router.I1:/var/lib/qdrouterd:Z"
 
 - name: Start Internal Router.I2
   docker_container:
@@ -38,7 +38,7 @@
           - brokeri2m
           - brokeri2s
     volumes:
-      - "{{ role_path }}/files/Router.I2:/var/lib/qdrouterd"
+      - "{{ role_path }}/files/Router.I2:/var/lib/qdrouterd:Z"
 
 - name: Start Internal Router.I3
   docker_container:
@@ -55,4 +55,4 @@
         links:
           - I2
     volumes:
-      - "{{ role_path }}/files/Router.I3:/var/lib/qdrouterd"
+      - "{{ role_path }}/files/Router.I3:/var/lib/qdrouterd:Z"

@@ -18,7 +18,7 @@
         links:
           - I1
     volumes:
-      - "{{ role_path }}/files/Router.E1:/var/lib/qdrouterd"
+      - "{{ role_path }}/files/Router.E1:/var/lib/qdrouterd:Z"
 
 - name: Start Edge Router.E2
   docker_container:
@@ -35,7 +35,7 @@
         links:
           - I2
     volumes:
-      - "{{ role_path }}/files/Router.E2:/var/lib/qdrouterd"
+      - "{{ role_path }}/files/Router.E2:/var/lib/qdrouterd:Z"
 
 - name: Start Edge Router.E3
   docker_container:
@@ -54,4 +54,4 @@
           - brokere3m
           - brokere3s
     volumes:
-      - "{{ role_path }}/files/Router.E3:/var/lib/qdrouterd"
+      - "{{ role_path }}/files/Router.E3:/var/lib/qdrouterd:Z"

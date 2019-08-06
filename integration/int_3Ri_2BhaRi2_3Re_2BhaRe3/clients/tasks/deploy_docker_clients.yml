@@ -23,7 +23,7 @@
           - Router.E2
           - Router.E3
     volumes:
-      - "{{ role_path }}/files/clients-data/msgs:/var/lib/cli-proton-python/msgs"
+      - "{{ role_path }}/files/clients-data/msgs:/var/lib/cli-proton-python/msgs:Z"
 
 - name: Deploy RHEA NodeJS client cli-rhea
   docker_container:
@@ -49,7 +49,7 @@
           - Router.E2
           - Router.E3
     volumes:
-      - "{{ role_path }}/files/clients-data/msgs:/var/lib/cli-rhea/msgs"
+      - "{{ role_path }}/files/clients-data/msgs:/var/lib/cli-rhea/msgs:Z"
 
 - name: Deploy clients cli-java
   docker_container:
@@ -75,4 +75,4 @@
           - Router.E2
           - Router.E3
     volumes:
-      - "{{ role_path }}/files/clients-data/msgs:/var/lib/cli-java/msgs"
+      - "{{ role_path }}/files/clients-data/msgs:/var/lib/cli-java/msgs:Z"
