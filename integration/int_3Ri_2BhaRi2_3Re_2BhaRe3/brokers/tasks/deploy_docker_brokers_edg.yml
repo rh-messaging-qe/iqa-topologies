@@ -18,7 +18,7 @@
         links:
           - E3
     volumes:
-      - "{{ role_path }}/files/broker-edge/master:/opt/broker1/etc"
+      - "{{ role_path }}/files/broker-edge/master:/opt/broker1/etc:Z"
 
 - name: Start Broker Edge 3 Slave
   docker_container:
@@ -36,7 +36,7 @@
           - E3
           - brokere3m
     volumes:
-      - "{{ role_path }}/files/broker-edge/slave:/opt/broker1/etc"
+      - "{{ role_path }}/files/broker-edge/slave:/opt/broker1/etc:Z"
 
 - name: Wait 30 seconds till Master and Slave handshake is complete
   pause:
