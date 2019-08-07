@@ -15,6 +15,20 @@
 # Undeploy previus topology if exist
 - hosts: docker-host
   tasks:
+    # PYTHON3SCL - When using python3 from RHSCL the selinux module is failing
+    #              as it expects an /usr/bin/python3 executable to exist
+    #              A PR has been submitted to the selinux pip module to fix
+    #              this issue.
+    - name: Creating link for python ansible_python_interpreter in /usr/bin
+      command: "ln -s {{ ansible_python_interpreter }} /usr/bin/"
+      ignore_errors: yes
+    # END PYTHON3SCL
+    - name: Installing pip modules
+      pip:
+        executable: /opt/rh/rh-python36/root/usr/bin/pip3
+        name:
+          - docker
+          - selinux
     - name: Create lab0 network
       docker_network:
         name: lab0
