@@ -17,6 +17,3 @@
   synchronize:
     src: "{{ role_path }}/files/broker-edge/slave/"
     dest: "{{ role_path }}/files/broker-edge/slave"
-
-- name: "Changing SELinux context to allow containers to mount volumes"
-  command: "chcon -Rt svirt_sandbox_file_t {{ role_path }}/files/broker-edge/"
