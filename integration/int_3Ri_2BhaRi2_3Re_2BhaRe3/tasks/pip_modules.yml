@@ -1,0 +1,7 @@
+- name: Installing pip modules
+  pip:
+    executable: "{{ pip_binary }}"
+    name:
+      - docker
+      - selinux
+    extra_args: --user
