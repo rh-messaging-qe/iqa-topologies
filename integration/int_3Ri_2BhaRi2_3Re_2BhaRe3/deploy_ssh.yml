@@ -29,7 +29,7 @@
     # END PYTHON3SCL
     - name: Installing pip modules
       pip:
-        executable: /opt/rh/rh-python36/root/usr/bin/pip3
+        executable: "{{ pip_binary }}"
         name:
           - docker
           - selinux
