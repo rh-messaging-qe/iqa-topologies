@@ -29,6 +29,7 @@
         name:
           - docker
           - selinux
+        extra_args: --user
     - name: Create lab0 network
       docker_network:
         name: lab0
