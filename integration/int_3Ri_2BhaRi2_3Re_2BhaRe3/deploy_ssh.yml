@@ -15,18 +15,20 @@
       with_items: [Router_I1, Router_I2, Router_I3, Router_E1, Router_E2, Router_E3]
 
 #
+# Addressing issues with python3 from RHSCL and selinux (pip)
+#
+- hosts: docker-host,Router.I2,Router.E3
+  tasks:
+    - import_tasks: tasks/selinux_python3.yml
+    - import_tasks: tasks/pip_modules.yml
+    - import_tasks: tasks/docker_network.yml
+
+#
 # Preparing docker network that will be used on Router.I2 and Router.E3 to
 # communicate with the broker instances
 #
 - hosts: Router.I2,Router.E3
   tasks:
-    - name: Create lab0 network
-      docker_network:
-        name: lab0
-        force: yes
-        ipam_options:
-          subnet: '192.168.8.0/24'
-
     # Adding interior brokers to /etc/hosts
     - name: Add IP address of interior brokers to router nodes
       lineinfile:
@@ -66,15 +68,6 @@
 #
 # Deploying the client containers into the docker-host
 #
-- hosts: docker-host
-  tasks:
-    - name: Create lab0 network
-      docker_network:
-        name: lab0
-        force: yes
-        ipam_options:
-          subnet: '192.168.8.0/24'
-
 - hosts: docker-host
   roles:
     - role: clients

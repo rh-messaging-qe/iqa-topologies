@@ -15,12 +15,9 @@
 # Undeploy previus topology if exist
 - hosts: docker-host
   tasks:
-    - name: Create lab0 network
-      docker_network:
-        name: lab0
-        force: yes
-        ipam_options:
-          subnet: '192.168.8.0/24'
+    - import_tasks: tasks/selinux_python3.yml
+    - import_tasks: tasks/pip_modules.yml
+    - import_tasks: tasks/docker_network.yml
 
 # Deploy the brokers
 - hosts: docker-host

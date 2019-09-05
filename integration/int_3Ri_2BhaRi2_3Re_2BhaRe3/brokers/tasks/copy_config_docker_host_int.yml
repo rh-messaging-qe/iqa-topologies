@@ -17,3 +17,4 @@
   synchronize:
     src: "{{ role_path }}/files/broker-interior/slave/"
     dest: "{{ role_path }}/files/broker-interior/slave"
+

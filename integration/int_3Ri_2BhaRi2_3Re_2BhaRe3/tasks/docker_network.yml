@@ -1,0 +1,6 @@
+- name: Create lab0 network
+  docker_network:
+    name: lab0
+    force: yes
+    ipam_options:
+      subnet: '192.168.8.0/24'
