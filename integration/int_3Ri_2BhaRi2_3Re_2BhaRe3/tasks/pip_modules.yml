@@ -4,4 +4,3 @@
     name:
       - docker
       - selinux
-    extra_args: --user
