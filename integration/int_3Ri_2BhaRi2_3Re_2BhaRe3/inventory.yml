@@ -3,8 +3,8 @@ all:
         ansible_user: root
         ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
         executor_docker_network: lab0
-        image_broker: rhmessagingqe/artemis:2.10.0-fedora30
-        image_router: rhmessagingqe/qpid-dispatch:ubuntu1804
+        image_broker: quay.io/fgiorgetti/artemis:2.10.0-fedora30
+        image_router: quay.io/fgiorgetti/qpid-dispatch:ubuntu1804
         docker_host: "{{ lookup('env', 'docker_host') or 'localhost' }}"
     hosts:
         docker-host:
