@@ -10,5 +10,5 @@
     capabilities: 
       - NET_ADMIN
     command: "qdisc add dev eth1 root netem delay {{ delay_time }}"
-
+  ignore_errors: true
 
