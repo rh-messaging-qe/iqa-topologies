@@ -2,7 +2,7 @@
 - name: Deploy Qpid Proton Python client cli-proton-python
   docker_container:
     name: cli-proton-python
-    image: rhmessagingqe/cli-proton-python
+    image: quay.io/qdrshipshape/cli-proton-python
     state: started
     recreate: yes
     command: "sh"
@@ -32,7 +32,7 @@
 - name: Deploy RHEA NodeJS client cli-rhea
   docker_container:
     name: cli-rhea
-    image: rhmessagingqe/cli-rhea:centos7
+    image: quay.io/qdrshipshape/cli-rhea:centos7
     state: started
     recreate: yes
     command: "sh"
@@ -62,7 +62,7 @@
 - name: Deploy clients cli-java
   docker_container:
     name: cli-java
-    image: rhmessagingqe/cli-java
+    image: quay.io/qdrshipshape/cli-java
     state: started
     recreate: yes
     command: "sh"
